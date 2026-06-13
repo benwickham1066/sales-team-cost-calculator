@@ -85,7 +85,7 @@ label{display:block;font-family:var(--ui);font-weight:600;font-size:.72rem;lette
   text-transform:uppercase;color:var(--white);margin-bottom:8px}
 label .opt{color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0}
 .input-row{display:flex;align-items:stretch;border-radius:var(--radius);overflow:hidden}
-.input-row .cur,.input-row input{border-radius:0}
+.input-row > *{border-radius:0 !important}   /* children square; the row's clip rounds the outer corners as one unit */
 .cur{display:flex;align-items:center;justify-content:center;min-width:48px;background:var(--surface2);
   border:1px solid var(--border);border-right:0;font-family:var(--ui);font-weight:600;color:var(--lime)}
 input[type=number],input[type=email],input[type=text]{
@@ -93,6 +93,9 @@ input[type=number],input[type=email],input[type=text]{
   font-family:var(--body);font-size:16px;padding:13px 14px;border-radius:var(--radius);outline:none;-webkit-appearance:none}
 input:focus{border-color:var(--lime);box-shadow:none}
 input::placeholder{color:#888}
+input[type=number]{-moz-appearance:textfield}
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
 .half{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 @media(max-width:560px){.half{grid-template-columns:1fr}}
 .micro{font-size:12px;color:var(--muted);margin-top:6px}
