@@ -3,20 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>What is a reactive sales leader costing your number? — SSC</title>
+<title>What a Reactive Sales Leader Costs You | SSC Calculator</title>
+<meta name="description" content="Estimate what a reactive sales leader is costing you — in revenue missed and reps lost — from figures you already have. Grounded in Gallup research, deliberately conservative.">
 
 <!-- ============================================================
      SSC SALES-LEADER CALCULATOR — V2 BETA
      Single self-contained file. Vanilla HTML/CSS/JS, no frameworks.
-     Intended to be iframed into Squarespace at a separate beta URL,
-     leaving the live v1 calculator untouched.
+     Iframe into Squarespace at a separate beta URL; the live v1 calc
+     is untouched. Background is transparent so it inherits the page.
 
-     FONTS: swap the @font-face slots below for the real DrukTextBold /
-     Gotham Squarespace CDN URLs used on v1.7. Falls back to close
-     free faces (Archivo / Inter) so it looks right out of the box.
+     FONTS: swap the @font-face slots for the real DrukTextBold / Gotham
+     Squarespace CDN URLs. Falls back to Archivo / Inter out of the box.
 
-     MODEL: see calc() — research coefficients are cited and fixed;
-     SSC modelling choices are labelled and conservative.
+     LEAD CAPTURE: set FORMSPARK_ACTION below to your Formspark endpoint.
      ============================================================ -->
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -24,199 +23,149 @@
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
 <style>
-/* ---- SWAP THESE FOR REAL SSC FONTS ----
-@font-face { font-family:'DrukTextBold'; src:url('YOUR-SQUARESPACE-CDN/DrukTextBold.woff2') format('woff2'); font-display:swap; }
-@font-face { font-family:'GothamBook';   src:url('YOUR-SQUARESPACE-CDN/GothamBook.woff2')   format('woff2'); font-display:swap; }
-@font-face { font-family:'GothamLight';  src:url('YOUR-SQUARESPACE-CDN/GothamLight.woff2')  format('woff2'); font-display:swap; }
-   then change --display and --body below to use them.
---------------------------------------- */
-
+/* ---- SWAP THESE FOR REAL SSC FONTS, then update --display / --body ----
+@font-face { font-family:'DrukTextBold'; src:url('YOUR-CDN/DrukTextBold.woff2') format('woff2'); font-display:swap; }
+@font-face { font-family:'GothamBook';   src:url('YOUR-CDN/GothamBook.woff2')   format('woff2'); font-display:swap; }
+----------------------------------------------------------------------- */
 :root{
-  --ink:#0B0B0C;
   --ink-2:#141417;
   --line:#26262B;
   --lime:#DCFF4F;
   --paper:#F2F2EE;
   --mute:#8A8A92;
   --mute-2:#5C5C63;
-  --risk:#FF7A59;        /* top-line leak */
+  --risk:#FF7A59;
   --display:'Archivo','DrukTextBold','Arial Narrow',sans-serif;
   --body:'Inter','GothamBook',-apple-system,system-ui,sans-serif;
 }
-
 *{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-text-size-adjust:100%}
 body{
-  background:var(--ink);
+  background:transparent;          /* inherits the Squarespace page */
   color:var(--paper);
-  font-family:var(--body);
-  line-height:1.5;
-  -webkit-font-smoothing:antialiased;
+  font-family:var(--body);line-height:1.5;-webkit-font-smoothing:antialiased;
 }
-.wrap{max-width:820px;margin:0 auto;padding:clamp(20px,5vw,56px) clamp(18px,5vw,40px) 80px}
+.wrap{max-width:820px;margin:0 auto;padding:clamp(16px,4vw,40px) clamp(16px,5vw,40px) 72px}
 
-/* ---------- type ---------- */
-.eyebrow{
-  font-family:var(--body);font-weight:600;
-  text-transform:uppercase;letter-spacing:.18em;
-  font-size:11px;color:var(--lime);
-}
-h1{
-  font-family:var(--display);font-weight:900;
-  font-size:clamp(34px,7vw,62px);line-height:.96;
-  letter-spacing:-.01em;text-transform:uppercase;
-  margin:18px 0 0;
-}
+.eyebrow{font-weight:600;text-transform:uppercase;letter-spacing:.18em;font-size:11px;color:var(--lime)}
+h1{font-family:var(--display);font-weight:900;font-size:clamp(32px,6.5vw,58px);line-height:.97;
+   letter-spacing:-.01em;text-transform:uppercase;margin:14px 0 0}
 h1 em{font-style:normal;color:var(--lime)}
-.sub{color:var(--mute);font-size:clamp(15px,2.4vw,18px);max-width:54ch;margin-top:18px}
-h2{font-family:var(--display);font-weight:800;text-transform:uppercase;
-   letter-spacing:-.005em;font-size:clamp(20px,3.4vw,26px);margin:0 0 4px}
+.sub{color:var(--mute);font-size:clamp(15px,2.4vw,18px);max-width:54ch;margin-top:16px}
+h2{font-family:var(--display);font-weight:800;text-transform:uppercase;letter-spacing:-.005em;
+   font-size:clamp(20px,3.4vw,26px);margin:0 0 4px}
 
-/* ---------- steps ---------- */
 .step{display:none}
-.step.on{display:block;animation:rise .45s cubic-bezier(.2,.7,.2,1)}
-@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.step.on{display:block;animation:rise .4s cubic-bezier(.2,.7,.2,1)}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 
-.card{
-  background:var(--ink-2);border:1px solid var(--line);
-  border-radius:16px;padding:clamp(20px,4vw,32px);margin-top:22px;
-}
+.card{background:var(--ink-2);border:1px solid var(--line);border-radius:16px;
+      padding:clamp(20px,4vw,32px);margin-top:22px}
 .card + .card{margin-top:16px}
-.card h2 + .hint{color:var(--mute);font-size:13px;margin-bottom:18px}
+.hint{color:var(--mute);font-size:14px;margin-top:6px}
 
-/* ---------- inputs ---------- */
-.field{margin-top:18px}
-.field:first-child{margin-top:0}
+.field{margin-top:18px}.field:first-child{margin-top:0}
 label{display:block;font-size:13px;font-weight:600;margin-bottom:7px}
 label .opt{color:var(--mute);font-weight:400}
-.input-row{display:flex;align-items:stretch;gap:0}
-.cur{
-  display:flex;align-items:center;justify-content:center;min-width:48px;
-  background:#1C1C20;border:1px solid var(--line);border-right:0;
-  border-radius:12px 0 0 12px;font-weight:600;color:var(--lime);
-}
-input[type=number],input[type=email],select{
-  width:100%;background:#1C1C20;border:1px solid var(--line);
-  color:var(--paper);font-family:var(--body);font-size:16px;
-  padding:13px 14px;border-radius:12px;outline:none;
-}
+.input-row{display:flex;align-items:stretch}
+.cur{display:flex;align-items:center;justify-content:center;min-width:48px;background:#1C1C20;
+     border:1px solid var(--line);border-right:0;border-radius:12px 0 0 12px;font-weight:600;color:var(--lime)}
+input[type=number],input[type=email],input[type=text],select{
+  width:100%;background:#1C1C20;border:1px solid var(--line);color:var(--paper);
+  font-family:var(--body);font-size:16px;padding:13px 14px;border-radius:12px;outline:none}
 .input-row input{border-radius:0 12px 12px 0}
 .half{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 input:focus,select:focus{border-color:var(--lime);box-shadow:0 0 0 3px rgba(220,255,79,.18)}
 input::placeholder{color:var(--mute-2)}
 .micro{font-size:12px;color:var(--mute);margin-top:6px}
-.adv-toggle{margin-top:18px;font-size:13px;color:var(--lime);cursor:pointer;
-  background:none;border:0;font-family:var(--body);font-weight:600;padding:0;text-decoration:underline}
+.adv-toggle{margin-top:18px;font-size:13px;color:var(--lime);cursor:pointer;background:none;border:0;
+            font-family:var(--body);font-weight:600;padding:0;text-decoration:underline}
 .adv{display:none;margin-top:14px;padding-top:14px;border-top:1px dashed var(--line)}
 .adv.on{display:block}
 
-/* renewals toggle */
 .switch{display:flex;align-items:center;gap:12px;margin-top:6px}
-.switch input{width:auto}
-.toggle{position:relative;width:46px;height:26px;flex:0 0 auto}
-.toggle input{position:absolute;opacity:0;width:100%;height:100%;margin:0;cursor:pointer}
+.toggle{position:relative;width:46px;height:26px;flex:0 0 auto;display:inline-block;cursor:pointer}
+.toggle input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer;z-index:2}
 .toggle .track{position:absolute;inset:0;background:#1C1C20;border:1px solid var(--line);
-  border-radius:20px;transition:.2s}
+               border-radius:20px;transition:.2s;pointer-events:none}
 .toggle .dot{position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;
-  background:var(--mute);transition:.2s}
-.toggle input:checked + .track{background:rgba(220,255,79,.22);border-color:var(--lime)}
-.toggle input:checked + .track + .dot{transform:translateX(20px);background:var(--lime)}
+             background:var(--mute);transition:.2s;pointer-events:none}
+.toggle input:checked ~ .track{background:rgba(220,255,79,.22);border-color:var(--lime)}
+.toggle input:checked ~ .dot{transform:translateX(20px);background:var(--lime)}
 
-/* ---------- scorecard ---------- */
-.dim{margin-top:20px}
-.dim:first-child{margin-top:0}
-.dim-h{font-family:var(--display);font-weight:800;text-transform:uppercase;
-  font-size:14px;letter-spacing:.04em;color:var(--paper);margin-bottom:2px}
-.dim-h span{color:var(--mute);font-weight:400;font-family:var(--body);
-  text-transform:none;letter-spacing:0;font-size:12px}
-.tick{display:flex;gap:12px;align-items:flex-start;padding:11px 0;
-  border-bottom:1px solid var(--line);cursor:pointer}
+.dim{margin-top:20px}.dim:first-child{margin-top:0}
+.dim-h{font-family:var(--display);font-weight:800;text-transform:uppercase;font-size:14px;
+       letter-spacing:.04em;color:var(--paper);margin-bottom:2px}
+.dim-h span{color:var(--mute);font-weight:400;font-family:var(--body);text-transform:none;letter-spacing:0;font-size:12px}
+.tick{display:flex;gap:12px;align-items:flex-start;padding:11px 0;border-bottom:1px solid var(--line);cursor:pointer}
 .tick:last-child{border-bottom:0}
-.tick input{width:auto;margin-top:2px;accent-color:var(--lime);width:18px;height:18px;flex:0 0 auto;cursor:pointer}
+.tick input{width:18px;height:18px;flex:0 0 auto;margin-top:2px;accent-color:var(--lime);cursor:pointer}
 .tick span{font-size:14px;color:#D4D4D0}
 
-/* ---------- buttons ---------- */
-.btn{
-  display:inline-flex;align-items:center;gap:10px;
-  background:var(--lime);color:#0B0B0C;border:0;cursor:pointer;
-  font-family:var(--display);font-weight:800;text-transform:uppercase;
-  letter-spacing:.02em;font-size:16px;padding:15px 26px;border-radius:12px;
-  margin-top:26px;transition:transform .12s,filter .12s;
-}
+.btn{display:inline-flex;align-items:center;gap:10px;background:var(--lime);color:#0B0B0C;border:0;cursor:pointer;
+     font-family:var(--display);font-weight:800;text-transform:uppercase;letter-spacing:.02em;font-size:16px;
+     padding:15px 26px;border-radius:12px;margin-top:26px;transition:transform .12s,filter .12s}
 .btn:hover{filter:brightness(1.06);transform:translateY(-1px)}
 .btn.ghost{background:transparent;color:var(--lime);border:1px solid var(--line);padding:13px 22px}
-.btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
 .btn-row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
 .err{color:var(--risk);font-size:13px;margin-top:12px;min-height:1px}
+.ok{color:var(--lime);font-size:13px;margin-top:12px;min-height:1px}
 
-/* ---------- result / ledger ---------- */
 .ledger{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:6px}
-@media(max-width:560px){.ledger{grid-template-columns:1fr}.half{grid-template-columns:1fr}}
-.leak{
-  border:1px solid var(--line);border-radius:14px;padding:20px;background:#1C1C20;
-}
+@media(max-width:560px){.ledger,.half{grid-template-columns:1fr}}
+.leak{border:1px solid var(--line);border-radius:14px;padding:20px;background:#1C1C20}
 .leak .tag{font-size:11px;text-transform:uppercase;letter-spacing:.14em;font-weight:600}
-.leak.top .tag{color:var(--risk)}
-.leak.bottom .tag{color:#7FB3FF}
-.leak .num{font-family:var(--display);font-weight:900;font-size:clamp(30px,6vw,44px);
-  line-height:1;margin:10px 0 4px}
+.leak.top .tag{color:var(--risk)}.leak.bottom .tag{color:#7FB3FF}
+.leak .num{font-family:var(--display);font-weight:900;font-size:clamp(30px,6vw,44px);line-height:1;margin:10px 0 4px}
 .leak .of{font-size:12px;color:var(--mute)}
-
-.total{
-  margin-top:16px;background:var(--lime);color:#0B0B0C;border-radius:16px;
-  padding:clamp(22px,4vw,30px);
-}
+.total{margin-top:16px;background:var(--lime);color:#0B0B0C;border-radius:16px;padding:clamp(22px,4vw,30px)}
 .total .tag{font-size:12px;text-transform:uppercase;letter-spacing:.14em;font-weight:700;opacity:.7}
-.total .num{font-family:var(--display);font-weight:900;font-size:clamp(40px,9vw,72px);
-  line-height:.95;margin:6px 0}
+.total .num{font-family:var(--display);font-weight:900;font-size:clamp(40px,9vw,72px);line-height:.95;margin:6px 0}
 .total .band{font-size:14px;font-weight:600}
-.roi{display:flex;align-items:baseline;gap:8px;margin-top:14px;
-  border-top:1px solid rgba(0,0,0,.18);padding-top:14px}
-.roi b{font-family:var(--display);font-weight:900;font-size:28px}
-.roi span{font-size:13px;font-weight:600}
-
+.roi{display:flex;align-items:baseline;gap:8px;margin-top:14px;border-top:1px solid rgba(0,0,0,.18);padding-top:14px}
+.roi b{font-family:var(--display);font-weight:900;font-size:28px}.roi span{font-size:13px;font-weight:600}
 .breakdown{margin-top:16px}
-.brow{display:flex;justify-content:space-between;gap:16px;padding:11px 0;
-  border-bottom:1px solid var(--line);font-size:14px}
+.brow{display:flex;justify-content:space-between;gap:16px;padding:11px 0;border-bottom:1px solid var(--line);font-size:14px}
 .brow:last-child{border-bottom:0}
 .brow .v{font-variant-numeric:tabular-nums;font-weight:600;white-space:nowrap}
-.brow.muted{color:var(--mute)}
-.brow.sum{font-weight:700}.brow.sum .v{color:var(--lime)}
-
+.brow.muted{color:var(--mute)}.brow.sum{font-weight:700}.brow.sum .v{color:var(--lime)}
 details{margin-top:16px;border:1px solid var(--line);border-radius:12px;background:var(--ink-2)}
 summary{cursor:pointer;padding:14px 18px;font-weight:600;font-size:14px;list-style:none}
 summary::-webkit-details-marker{display:none}
 summary::after{content:'+';float:right;color:var(--lime);font-weight:800}
-details[open] summary::after{content:'–'}
+details[open] summary::after{content:'\2013'}
 .prov{padding:0 18px 18px;font-size:13px;color:var(--mute);line-height:1.6}
-.prov p{margin-top:10px}
-.prov b{color:var(--paper)}
-.cite{color:var(--lime)}
-
+.prov p{margin-top:10px}.prov b{color:var(--paper)}.cite{color:var(--lime)}
 .disc{margin-top:22px;font-size:12px;color:var(--mute-2);line-height:1.6}
-.compliance{margin-top:16px;font-size:11px;color:var(--mute-2)}
-.compliance a{color:var(--mute);text-decoration:underline}
+.beta{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+      color:#0B0B0C;background:var(--lime);padding:3px 8px;border-radius:5px;vertical-align:middle;margin-left:10px}
+.emailbox{margin-top:18px;padding-top:18px;border-top:1px solid var(--line)}
 
-.beta{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.14em;
-  text-transform:uppercase;color:#0B0B0C;background:var(--lime);
-  padding:3px 8px;border-radius:5px;vertical-align:middle;margin-left:10px}
+/* print / download-as-PDF */
+.print-head{display:none}
+@media print{
+  body{background:#fff;color:#000}
+  .wrap{padding:0}
+  .step:not(.on),.no-print{display:none!important}
+  .print-head{display:block;margin-bottom:18px}
+  .print-head .ph-name{font-family:var(--display);font-weight:900;text-transform:uppercase;font-size:18px}
+  .print-head .ph-sub{font-size:12px;color:#555}
+  .card,.leak,.total,details{border:1px solid #bbb!important;background:#fff!important;color:#000!important}
+  .total .num,.leak .num,.brow.sum .v,.roi b,.cite,.eyebrow,.dim-h{color:#000!important}
+  .leak.top .tag{color:#000!important}.leak.bottom .tag{color:#000!important}
+  details[open] .prov{color:#222!important}
+  a{color:#000;text-decoration:underline}
+}
 </style>
 </head>
 <body>
 <div class="wrap">
 
-  <!-- ===================== STEP 1 — INTRO ===================== -->
+  <!-- ===================== STEP 1 — INPUTS (lands here) ===================== -->
   <section class="step on" id="s1">
     <span class="eyebrow">Single Session Coaching · Sales leaders <span class="beta">Beta</span></span>
     <h1>A reactive sales&nbsp;leader hits your number <em>twice.</em></h1>
-    <p class="sub">Once on the top line — deals not closed, targets missed. Once on the bottom line — reps lost, ramp time paid for twice. This estimates both, from figures you already own. Two minutes.</p>
-    <button class="btn" onclick="go(2)">Start &rarr;</button>
-  </section>
-
-  <!-- ===================== STEP 2 — INPUTS ===================== -->
-  <section class="step" id="s2">
-    <span class="eyebrow">Step 1 of 3 · The team</span>
-    <h2 style="margin-top:14px">The numbers you already have</h2>
+    <p class="sub">Once on the top line — deals not closed. Once on the bottom line — reps lost and re-ramped. This prices both, from figures you already hold. Two minutes.</p>
 
     <div class="card">
       <div class="field">
@@ -228,12 +177,10 @@ details[open] summary::after{content:'–'}
           <option value="A$">A$ AUD</option>
         </select>
       </div>
-
       <div class="field">
         <label for="quota">Team annual sales target <span class="opt">(sum of rep quotas)</span></label>
         <div class="input-row"><span class="cur" data-cur>€</span><input type="number" id="quota" min="0" placeholder="5,000,000"></div>
       </div>
-
       <div class="half">
         <div class="field">
           <label for="reps">Reps in the team</label>
@@ -244,7 +191,6 @@ details[open] summary::after{content:'–'}
           <div class="input-row"><span class="cur" data-cur>€</span><input type="number" id="ote" min="0" placeholder="120,000"></div>
         </div>
       </div>
-
       <div class="half">
         <div class="field">
           <label for="lost">Reps lost in last 12 months</label>
@@ -255,7 +201,6 @@ details[open] summary::after{content:'–'}
           <input type="number" id="attain" min="0" max="200" placeholder="82">
         </div>
       </div>
-
       <button class="adv-toggle" type="button" onclick="toggleAdv()">Adjust the model defaults</button>
       <div class="adv" id="adv">
         <div class="half">
@@ -281,7 +226,7 @@ details[open] summary::after{content:'–'}
       <div class="field">
         <label>Does this team own renewals or expansion revenue?</label>
         <div class="switch">
-          <span class="toggle"><input type="checkbox" id="hasRenew" onchange="toggleRenew()"><span class="track"></span><span class="dot"></span></span>
+          <label class="toggle"><input type="checkbox" id="hasRenew" onchange="toggleRenew()"><span class="track"></span><span class="dot"></span></label>
           <span style="font-size:14px;color:#D4D4D0">A reactive leader also leaks <em>retained</em> revenue, not only new.</span>
         </div>
         <div class="field" id="renewField" style="display:none">
@@ -291,18 +236,15 @@ details[open] summary::after{content:'–'}
       </div>
     </div>
 
-    <div class="btn-row">
-      <button class="btn" id="toStep3">Next: observe the pattern &rarr;</button>
-    </div>
-    <div class="err" id="err2"></div>
+    <div class="btn-row"><button class="btn" id="toStep2">Next: observe the pattern &rarr;</button></div>
+    <div class="err" id="err1"></div>
   </section>
 
-  <!-- ===================== STEP 3 — SCORECARD ===================== -->
-  <section class="step" id="s3">
-    <span class="eyebrow">Step 2 of 3 · The pattern</span>
+  <!-- ===================== STEP 2 — SCORECARD ===================== -->
+  <section class="step" id="s2">
+    <span class="eyebrow">Step 2 of 2 · The pattern</span>
     <h2 style="margin-top:14px">What you've actually seen this leader do</h2>
-    <p class="hint" style="color:var(--mute);font-size:14px;margin-top:6px">Tick only what you've genuinely observed. The number is built from this, not assumed — no ticks, no claim. Behaviours map to three reactive patterns.</p>
-
+    <p class="hint">Tick only what you've genuinely observed. The number is built from this — no ticks, no claim. Behaviours map to three reactive patterns.</p>
     <div class="card">
       <div class="dim">
         <div class="dim-h">Controlling <span>— drives results through force, can't let go</span></div>
@@ -323,61 +265,31 @@ details[open] summary::after{content:'–'}
         <label class="tick"><input type="checkbox" class="sc"><span>Lets other functions block deals rather than forcing the issue</span></label>
       </div>
     </div>
-
     <div class="btn-row">
-      <button class="btn ghost" onclick="go(2)">&larr; Back</button>
-      <button class="btn" onclick="go(4)">See the estimate &rarr;</button>
+      <button class="btn ghost" onclick="go(1)">&larr; Back</button>
+      <button class="btn" onclick="seeEstimate()">See the estimate &rarr;</button>
     </div>
   </section>
 
-  <!-- ===================== STEP 4 — EMAIL GATE ===================== -->
-  <section class="step" id="s4">
-    <span class="eyebrow">Step 3 of 3 · Your estimate is ready</span>
-    <h2 style="margin-top:14px">Where should we send the full breakdown?</h2>
-    <p class="hint" style="color:var(--mute);font-size:14px;margin-top:6px">See your number on screen now and get the detailed report by email.</p>
-    <div class="card">
-      <div class="field">
-        <label for="email">Work email</label>
-        <input type="email" id="email" placeholder="you@company.com">
-      </div>
-      <div class="field">
-        <label for="name">Name <span class="opt">(optional)</span></label>
-        <input type="text" id="name" placeholder="" style="width:100%;background:#1C1C20;border:1px solid var(--line);color:var(--paper);font-family:var(--body);font-size:16px;padding:13px 14px;border-radius:12px;outline:none">
-      </div>
-      <button class="btn" onclick="reveal()">Show my estimate &rarr;</button>
-      <div class="err" id="err4"></div>
-      <p class="compliance">By continuing you agree to your details being handled per our
-        <a href="https://singlesession.online/privacy" target="_blank" rel="noopener">privacy policy</a>,
-        <a href="https://singlesession.online/terms-conditions" target="_blank" rel="noopener">terms</a> and
-        <a href="https://singlesession.online/dpa" target="_blank" rel="noopener">DPA</a>.</p>
+  <!-- ===================== STEP 3 — RESULT ===================== -->
+  <section class="step" id="s3">
+    <div class="print-head">
+      <div class="ph-name">Single Session Coaching</div>
+      <div class="ph-sub" id="phSub">Sales-leader cost estimate</div>
     </div>
-  </section>
-
-  <!-- ===================== STEP 5 — RESULT ===================== -->
-  <section class="step" id="s5">
-    <span class="eyebrow">Modelled estimate · one reactive sales leader</span>
+    <span class="eyebrow no-print">Modelled estimate · one reactive sales leader</span>
     <h2 style="margin-top:14px">The double hit, in your numbers</h2>
 
     <div class="ledger">
-      <div class="leak top">
-        <div class="tag">Top line · revenue at risk</div>
-        <div class="num" id="aNum">—</div>
-        <div class="of" id="aOf">deals not closed</div>
-      </div>
-      <div class="leak bottom">
-        <div class="tag">Bottom line · churn &amp; ramp</div>
-        <div class="num" id="bNum">—</div>
-        <div class="of" id="bOf">cost of replacing and re-ramping</div>
-      </div>
+      <div class="leak top"><div class="tag">Top line · revenue at risk</div><div class="num" id="aNum">—</div><div class="of" id="aOf">deals not closed</div></div>
+      <div class="leak bottom"><div class="tag">Bottom line · churn &amp; ramp</div><div class="num" id="bNum">—</div><div class="of">cost of replacing and re-ramping</div></div>
     </div>
 
     <div class="total">
       <div class="tag">Recoverable each year</div>
       <div class="num" id="totNum">—</div>
       <div class="band" id="totBand"></div>
-      <div class="roi">
-        <b id="roiX">—</b><span>&times; the cost of one 90-minute session (€3,500) — every year it goes unaddressed</span>
-      </div>
+      <div class="roi"><b id="roiX">—</b><span>&times; the cost of one 90-minute session (€3,500) — every year it goes unaddressed</span></div>
     </div>
 
     <div class="card">
@@ -388,36 +300,41 @@ details[open] summary::after{content:'–'}
     <details>
       <summary>How this is calculated — and what's research vs judgement</summary>
       <div class="prov">
-        <p><b>Top line (revenue at risk).</b> Gallup's Q12 meta-analysis finds a <span class="cite">20% gap in sales</span> between top- and bottom-quartile engagement units, and that <span class="cite">managers account for ~70% of engagement variance</span> (State of the American Manager, 2015). We never apply the full gap: the observed-pattern score positions you on a conservative band that tops out at <b>half</b> that gap. So the ceiling on any team is ~7% of quota — and it's lower the fewer behaviours you tick.</p>
-        <p><b>The bridge is ours.</b> Linking a reactive pattern to lower engagement is SSC's join, not Gallup's — Leadership Circle measures reactive tendency, Gallup measures engagement. It's a reasoned assumption, which is why this is a modelled estimate.</p>
-        <p><b>Bottom line (churn &amp; ramp).</b> Only departures <i>above</i> your normal turnover are counted, and only ~70% attributed to the leader. Each costs a replacement (a % of OTE) plus the quota a ramping seat can't carry. These are industry benchmarks you can adjust, not research constants.</p>
-        <p><b>No double-counting.</b> For a sales team the productivity loss <i>is</i> the revenue gap, so we price it once (top line) rather than stacking a separate productivity figure on top.</p>
+        <p><b>Top line (revenue at risk).</b> Gallup's Q12 meta-analysis finds a <span class="cite">20% gap in sales</span> between top- and bottom-quartile engagement units, and that <span class="cite">managers account for ~70% of engagement variance</span> (State of the American Manager, 2015). We never apply the full gap: the observed-pattern score positions you on a conservative band that tops out at <b>half</b> of it — a ceiling of ~7% of quota, lower the fewer behaviours ticked.</p>
+        <p><b>The bridge is ours.</b> Linking a reactive pattern to lower engagement is SSC's reasoning, not Gallup's — which is why this is a modelled estimate, with every assumption visible.</p>
+        <p><b>Bottom line (churn &amp; ramp).</b> Only departures <i>above</i> your normal turnover count, only ~70% attributed to the leader, and scaled by the observed pattern. Each costs a replacement (a % of OTE) plus the quota a ramping seat can't yet carry. Industry benchmarks you can adjust, not research constants.</p>
+        <p><b>No double-counting.</b> For a sales team the productivity loss <i>is</i> the revenue gap, so it's priced once — on the top line — not stacked twice.</p>
       </div>
     </details>
 
     <p class="disc" id="disc"></p>
 
-    <div class="btn-row">
-      <button class="btn ghost" onclick="go(2)">&larr; Change inputs</button>
-      <button class="btn" onclick="window.open('https://singlesession.online','_blank')">Talk to us about a session &rarr;</button>
+    <div class="emailbox no-print">
+      <label for="email">Email me this report <span class="opt">(optional)</span></label>
+      <div class="input-row" style="margin-top:7px">
+        <input type="email" id="email" placeholder="you@company.com" style="border-radius:12px 0 0 12px">
+        <button class="btn" style="margin-top:0;border-radius:0 12px 12px 0" onclick="sendReport()">Send</button>
+      </div>
+      <div class="ok" id="ok3"></div>
+      <div class="err" id="err3"></div>
+    </div>
+
+    <div class="btn-row no-print">
+      <button class="btn ghost" onclick="go(1)">&larr; Change inputs</button>
+      <button class="btn ghost" onclick="window.print()">Download / print report</button>
+      <button class="btn" onclick="window.open('https://singlesession.online','_blank')">Talk to us &rarr;</button>
     </div>
   </section>
 
 </div>
 
 <script>
-/* ============================================================
-   MODEL COEFFICIENTS
-   Research (fixed, cited):                          SSC choices (tunable):
-   ============================================================ */
+/* ===== coefficients: research (fixed, cited) + SSC choices (tunable) ===== */
 const C = {
-  gallupSales:      0.20,   // Gallup Q12: top vs bottom quartile, sales production
-  gallupCustomer:   0.10,   // Gallup Q12: customer ratings differential (renewals)
-  attribution:      0.70,   // Gallup: managers ~70% of engagement variance
-  gapCeiling:       0.50,   // SSC: never claim more than half the quartile gap
-  uncertainty:      0.20,   // SSC: ± band expressing the bridge assumption
-  sessionCost:      3500    // € per 90-minute session (ROI denominator)
+  gallupSales:0.20, gallupCustomer:0.10, attribution:0.70,
+  gapCeiling:0.50, uncertainty:0.20, sessionCost:3500
 };
+const FORMSPARK_ACTION = 'https://submit-form.com/YOUR-FORMSPARK-ID';   // <-- set this
 
 let cur = '€';
 const fmt = n => cur + Math.round(n).toLocaleString('en-GB');
@@ -427,138 +344,98 @@ function go(n){
   document.getElementById('s'+n).classList.add('on');
   window.scrollTo({top:0,behavior:'smooth'});
 }
-function setCur(){
-  cur = document.getElementById('currency').value;
-  document.querySelectorAll('[data-cur]').forEach(e=>e.textContent=cur);
-}
+function setCur(){cur=document.getElementById('currency').value;
+  document.querySelectorAll('[data-cur]').forEach(e=>e.textContent=cur);}
 function toggleAdv(){document.getElementById('adv').classList.toggle('on');}
-function toggleRenew(){
-  document.getElementById('renewField').style.display =
-    document.getElementById('hasRenew').checked ? 'block':'none';
-}
-
+function toggleRenew(){document.getElementById('renewField').style.display =
+  document.getElementById('hasRenew').checked ? 'block':'none';}
 function num(id){const v=parseFloat(document.getElementById(id).value);return isNaN(v)?0:v;}
 
 function validateInputs(){
-  const e=document.getElementById('err2');
+  const e=document.getElementById('err1');
   if(num('quota')<=0){e.textContent='Add the team sales target to continue.';return false;}
   if(num('reps')<1){e.textContent='How many reps are on the team?';return false;}
   if(num('ote')<=0){e.textContent='Add average rep OTE to continue.';return false;}
   e.textContent='';return true;
 }
 
-/* core model -------------------------------------------------- */
 function calc(){
-  const quota = num('quota');
-  const reps  = Math.max(1,num('reps'));
-  const ote   = num('ote');
-  const lost  = num('lost');
-  const baseTurn = num('baseTurn')/100;
-  const rampM = Math.max(1,num('ramp'));
-  const replPct = num('repl')/100;
+  const quota=num('quota'), reps=Math.max(1,num('reps')), ote=num('ote'), lost=num('lost');
+  const baseTurn=num('baseTurn')/100, rampM=Math.max(1,num('ramp')), replPct=num('repl')/100;
 
-  // observed-pattern weighting: ticks -> fraction of the quartile gap (0 .. ceiling)
-  const ticks = document.querySelectorAll('.sc:checked').length;
-  const maxTicks = document.querySelectorAll('.sc').length;
-  const patternIntensity = ticks / maxTicks;        // 0 .. 1, from observed behaviours
-  const frac = patternIntensity * C.gapCeiling;     // 0 at no ticks, 0.5 at all
+  const ticks=document.querySelectorAll('.sc:checked').length;
+  const maxTicks=document.querySelectorAll('.sc').length;
+  const patternIntensity=ticks/maxTicks;          // 0..1 from observed behaviours
+  const frac=patternIntensity*C.gapCeiling;        // 0 at no ticks, 0.5 at all
 
-  // STREAM A — revenue at risk (top line)
-  const A = quota * frac * C.gallupSales * C.attribution;
+  const A=quota*frac*C.gallupSales*C.attribution;  // revenue at risk
 
-  // STREAM B — churn & ramp (bottom line), attributed in proportion to the observed pattern
-  const baselineDeps = reps * baseTurn;
-  const excess = Math.max(0, lost - baselineDeps);
-  const attribDeps = excess * C.attribution * patternIntensity;
-  const perRepQuota = quota / reps;
-  const replacement = ote * replPct;
-  const rampGap = perRepQuota * (rampM/12) * 0.5;     // ramping seat ~half-productive
-  const Breplace = attribDeps * replacement;
-  const Bramp    = attribDeps * rampGap;
-  const B = Breplace + Bramp;
+  const baselineDeps=reps*baseTurn;
+  const excess=Math.max(0,lost-baselineDeps);
+  const attribDeps=excess*C.attribution*patternIntensity;
+  const perRepQuota=quota/reps;
+  const replacement=ote*replPct;
+  const rampGap=perRepQuota*(rampM/12)*0.5;
+  const Breplace=attribDeps*replacement, Bramp=attribDeps*rampGap;
+  const B=Breplace+Bramp;
 
-  // STREAM C — renewals (optional, retained revenue)
-  let Cstream = 0, book = 0;
-  if(document.getElementById('hasRenew').checked){
-    book = num('renewBook');
-    Cstream = book * frac * C.gallupCustomer * C.attribution;
-  }
+  let Cstream=0;
+  if(document.getElementById('hasRenew').checked)
+    Cstream=num('renewBook')*frac*C.gallupCustomer*C.attribution;
 
-  const total = A + B + Cstream;
-  return {
-    ticks, A, B, Breplace, Bramp, Cstream, total, quota,
-    attribDeps, replacement, rampGap, book,
-    low: total*(1-C.uncertainty), high: total*(1+C.uncertainty),
-    roi: total / C.sessionCost
-  };
+  const total=A+B+Cstream;
+  return {ticks,A,B,Breplace,Bramp,Cstream,total,attribDeps,
+    low:total*(1-C.uncertainty),high:total*(1+C.uncertainty),roi:total/C.sessionCost};
 }
 
-function reveal(){
-  const em=document.getElementById('email').value.trim();
-  const err=document.getElementById('err4');
-  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){err.textContent='Enter a valid work email.';return;}
-  err.textContent='';
-  submitLead(em);          // wire to Formspark below
-  render();
-  go(5);
-}
-
-/* LEAD CAPTURE — replace ACTION with your Formspark endpoint (EU, GDPR) */
-function submitLead(email){
-  const r = calc();
-  const payload = {
-    email, name: document.getElementById('name').value.trim(),
-    currency: cur, quota: r.quota, ticks: r.ticks,
-    revenue_at_risk: Math.round(r.A), churn_ramp_cost: Math.round(r.B),
-    renewal_at_risk: Math.round(r.Cstream), total: Math.round(r.total),
-    roi_multiple: Math.round(r.roi), source: 'sales-calc-v2-beta'
-  };
-  const ACTION = 'https://submit-form.com/YOUR-FORMSPARK-ID';   // <-- set this
-  try{
-    fetch(ACTION,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},
-      body:JSON.stringify(payload)});
-  }catch(e){/* fail silently; user still sees result */}
-}
+function seeEstimate(){render();go(3);}
 
 function render(){
-  const r = calc();
+  const r=calc();
+  document.getElementById('aNum').textContent=fmt(r.A);
+  document.getElementById('bNum').textContent=fmt(r.B);
+  document.getElementById('totNum').textContent=fmt(r.total);
+  document.getElementById('totBand').textContent='Modelled range '+fmt(r.low)+' – '+fmt(r.high);
+  document.getElementById('roiX').textContent=r.roi>=1?r.roi.toFixed(0)+'×':r.roi.toFixed(1)+'×';
+  const attain=num('attain');
+  document.getElementById('aOf').textContent=attain>0?('at '+attain+'% attainment today'):'deals not closed';
 
-  document.getElementById('aNum').textContent = fmt(r.A);
-  document.getElementById('bNum').textContent = fmt(r.B);
-  document.getElementById('totNum').textContent = fmt(r.total);
-  document.getElementById('totBand').textContent =
-    'Modelled range ' + fmt(r.low) + ' – ' + fmt(r.high);
-  document.getElementById('roiX').textContent = r.roi>=1 ? r.roi.toFixed(0)+'×' : r.roi.toFixed(1)+'×';
-
-  const attain = num('attain');
-  document.getElementById('aOf').textContent =
-    attain>0 ? ('at '+attain+'% attainment today') : 'deals not closed';
-
-  // breakdown
-  const rows = [];
-  rows.push(['Revenue at risk (top line)', fmt(r.A), '']);
+  const rows=[['Revenue at risk (top line)',fmt(r.A),'']];
   if(r.attribDeps>0){
-    rows.push(['Replacing lost reps', fmt(r.Breplace), 'muted']);
-    rows.push(['Quota carried by ramping seats', fmt(r.Bramp), 'muted']);
-  } else {
-    rows.push(['Churn &amp; ramp', 'No excess churn attributed', 'muted']);
-  }
-  if(r.Cstream>0) rows.push(['Renewal revenue at risk', fmt(r.Cstream), '']);
-  rows.push(['Total recoverable each year', fmt(r.total), 'sum']);
-
-  document.getElementById('bd').innerHTML = rows.map(([k,v,cls])=>
+    rows.push(['Replacing lost reps',fmt(r.Breplace),'muted']);
+    rows.push(['Quota carried by ramping seats',fmt(r.Bramp),'muted']);
+  } else rows.push(['Churn &amp; ramp','No excess churn attributed','muted']);
+  if(r.Cstream>0) rows.push(['Renewal revenue at risk',fmt(r.Cstream),'']);
+  rows.push(['Total recoverable each year',fmt(r.total),'sum']);
+  document.getElementById('bd').innerHTML=rows.map(([k,v,cls])=>
     `<div class="brow ${cls}"><span>${k}</span><span class="v">${v}</span></div>`).join('');
 
-  // honest framing of the gate
-  let d = 'A modelled estimate, not a measured outcome. It shows revenue currently <b>at risk</b> and recoverable — not revenue promised. The realised figure is what we measure together against your baseline afterwards.';
-  if(r.ticks===0) d = 'No behaviours were ticked, so there\'s no observed basis to attribute a cost — the estimate is zero by design. Go back and tick only what you\'ve genuinely seen.';
-  document.getElementById('disc').innerHTML = d;
+  document.getElementById('phSub').textContent='Sales-leader cost estimate · '+new Date().toLocaleDateString('en-GB');
+
+  let d='A modelled estimate, not a measured outcome. It shows revenue currently <b>at risk</b> and recoverable — not revenue promised. The realised figure is what we measure together afterwards, against your baseline.';
+  if(r.ticks===0) d='No behaviours were ticked, so there\'s no observed basis to attribute a cost — the estimate is zero by design. Go back and tick only what you\'ve genuinely seen.';
+  document.getElementById('disc').innerHTML=d;
 }
 
-/* step 2 -> step 3: validate first, then advance */
-document.getElementById('toStep3').addEventListener('click',function(){
-  if(validateInputs()) go(3);
-});
+/* optional: email the report (non-blocking). Needs FORMSPARK_ACTION set. */
+function sendReport(){
+  const em=document.getElementById('email').value.trim();
+  const ok=document.getElementById('ok3'), err=document.getElementById('err3');
+  ok.textContent='';err.textContent='';
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){err.textContent='Enter a valid email.';return;}
+  if(FORMSPARK_ACTION.indexOf('YOUR-FORMSPARK-ID')!==-1){
+    err.textContent='Email delivery isn\'t wired up yet — set the Formspark endpoint.';return;}
+  const r=calc();
+  fetch(FORMSPARK_ACTION,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},
+    body:JSON.stringify({email:em,currency:cur,ticks:r.ticks,
+      revenue_at_risk:Math.round(r.A),churn_ramp_cost:Math.round(r.B),
+      renewal_at_risk:Math.round(r.Cstream),total:Math.round(r.total),
+      roi_multiple:Math.round(r.roi),source:'sales-calc-v2-beta'})})
+    .then(()=>{ok.textContent='Sent — check your inbox shortly.';})
+    .catch(()=>{err.textContent='Something went wrong sending that. Try again.';});
+}
+
+document.getElementById('toStep2').addEventListener('click',function(){if(validateInputs())go(2);});
 </script>
 </body>
 </html>
