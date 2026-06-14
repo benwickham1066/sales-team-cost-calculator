@@ -49,7 +49,7 @@ h1{font-family:var(--display);font-weight:700;font-size:clamp(34px,7vw,60px);lin
 h1 em{font-style:normal;color:var(--lime)}
 .sub{color:var(--muted);font-size:clamp(15px,2.3vw,18px);max-width:56ch;margin-top:16px}
 h2{font-family:var(--display);font-weight:700;text-transform:uppercase;letter-spacing:.005em;
-   font-size:clamp(20px,3.4vw,26px);margin:0}
+   font-size:clamp(26px,5.2vw,40px);margin:0}
 .sect-label{font-family:var(--ui);font-weight:600;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
 
 .step{display:none}
@@ -127,7 +127,7 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
 
 /* scorecard */
 .dim{margin-top:20px}.dim:first-child{margin-top:0}
-.dim-h{font-family:var(--display);font-size:.95rem;letter-spacing:.02em;text-transform:uppercase;color:var(--white);margin-bottom:2px}
+.dim-h{font-family:var(--display);font-size:1.2rem;letter-spacing:.02em;text-transform:uppercase;color:var(--white);margin-bottom:2px}
 .dim-h span{color:var(--muted);font-family:var(--body);text-transform:none;letter-spacing:0;font-size:.78rem}
 .tick{display:flex;gap:12px;align-items:flex-start;padding:11px 0;border-bottom:1px solid var(--border);cursor:pointer}
 .tick:last-child{border-bottom:0}
@@ -182,6 +182,10 @@ details[open] summary::after{content:'\2013'}
 .emailbox{margin-top:22px;padding-top:18px;border-top:1px solid var(--border)}
 .gdpr{font-size:11px;color:var(--muted);line-height:1.7;margin-top:10px}
 .gdpr a{color:var(--muted);text-decoration:underline}
+.ssc-foot{margin-top:30px;padding-top:18px;border-top:1px solid var(--border);font-family:var(--body);font-size:11px;color:#9a9aa0;line-height:1.7}
+.ssc-foot div+div{margin-top:6px}
+.ssc-foot a{color:var(--muted);text-decoration:underline}
+@media(max-width:560px){.cur-note{display:none}.strip-tag{font-size:8px;padding:12px 7px}}
 
 .print-head{display:none}
 @media print{
@@ -247,7 +251,7 @@ details[open] summary::after{content:'\2013'}
     </div>
 
     <div class="panel spaced">
-      <label>Does this team own renewals or expansion revenue?</label>
+      <div class="lh"><label>Does this team own renewals or expansion revenue?</label><span class="info" tabindex="0" data-tip="Renewals means keeping existing customers when their contracts come up; expansion means growing those accounts through upsells. Switch this on if the team owns either, and we add the retained revenue a reactive leader puts at risk.">i</span></div>
       <div class="switch">
         <label class="toggle"><input type="checkbox" id="hasRenew" onchange="toggleRenew()"><span class="track"></span><span class="dot"></span></label>
         <span style="font-size:14px;color:var(--white)">A reactive leader also protects less <em>retained</em> revenue, not only new.</span>
@@ -278,13 +282,13 @@ details[open] summary::after{content:'\2013'}
         <div class="dim-h">Protecting <span>— withdraws, stays distant and safe</span></div>
         <label class="tick"><input type="checkbox" class="sc"><span>Avoids the hard performance conversation until it's too late</span></label>
         <label class="tick"><input type="checkbox" class="sc"><span>Explains away missed numbers rather than confronting them</span></label>
-        <label class="tick"><input type="checkbox" class="sc"><span>Stays remote from the floor and from live deals</span></label>
+        <label class="tick"><input type="checkbox" class="sc"><span>Keeps their distance from the team and from live deals</span></label>
       </div>
       <div class="dim">
         <div class="dim-h">Complying <span>— defers, pleases, won't push back</span></div>
         <label class="tick"><input type="checkbox" class="sc"><span>Accepts unrealistic targets without negotiating them down</span></label>
-        <label class="tick"><input type="checkbox" class="sc"><span>Defers upward over backing the team's call</span></label>
-        <label class="tick"><input type="checkbox" class="sc"><span>Lets other functions block deals rather than forcing the issue</span></label>
+        <label class="tick"><input type="checkbox" class="sc"><span>Sides with senior management instead of backing the team</span></label>
+        <label class="tick"><input type="checkbox" class="sc"><span>Lets other departments stall deals instead of pushing to unblock them</span></label>
       </div>
     </div>
     <div class="btn-row">
@@ -331,23 +335,31 @@ details[open] summary::after{content:'\2013'}
 
     <p class="disc" id="disc"></p>
 
-    <div class="emailbox no-print">
-      <label for="email">Email me this report <span class="opt">(optional)</span></label>
-      <div class="input-row" style="margin-top:8px">
-        <input type="email" id="email" placeholder="you@company.com">
-        <button class="btn" style="margin-top:0" onclick="sendReport()">Send</button>
+        <div class="emailbox no-print">
+      <label style="font-size:.8rem;text-transform:none;letter-spacing:0">Want us to take a look? Send these figures to our team.</label>
+      <p class="gdpr" style="margin-top:6px;margin-bottom:14px">Download your report below to keep — or send your figures to SSC and we'll come back to you. You don't need to email it to yourself.</p>
+      <div class="half">
+        <div class="field"><label for="cName">Your name</label><input type="text" id="cName" placeholder="Jane Smith"></div>
+        <div class="field"><label for="email">Work email</label><input type="email" id="email" placeholder="you@company.com"></div>
       </div>
+      <div class="field"><label for="cCompany">Company / team name <span class="opt">(used on your report)</span></label><input type="text" id="cCompany" placeholder="Acme — EMEA Sales"></div>
+      <button class="btn" onclick="sendReport()">Send to SSC &rarr;</button>
       <div class="ok" id="ok3"></div>
       <div class="err" id="err3"></div>
-      <p class="gdpr">This calculator runs entirely in your browser — nothing is collected unless you submit your email. If you do, your details are processed by Formspark (EU-based, GDPR compliant) and received by Single Session Coaching Global BV (Netherlands) only, never shared with third parties. By sending you confirm you've read our <a href="https://singlesession.online/privacy" target="_blank" rel="noopener">privacy policy</a> and agree to our <a href="https://singlesession.online/terms-conditions" target="_blank" rel="noopener">terms</a>. The <a href="https://singlesession.online/dpa" target="_blank" rel="noopener">DPA</a> is available to download.</p>
+      <p class="gdpr">Your details are processed by Formspark (EU-based, GDPR compliant) and received by Single Session Coaching Global BV (Netherlands) only, never shared with third parties. By sending you confirm you've read our <a href="https://singlesession.online/privacy" target="_blank" rel="noopener">privacy policy</a> and agree to our <a href="https://singlesession.online/terms-conditions" target="_blank" rel="noopener">terms</a>. The <a href="https://singlesession.online/dpa" target="_blank" rel="noopener">DPA</a> is available to download.</p>
     </div>
 
     <div class="btn-row no-print">
       <button class="btn ghost" onclick="go(1)">&larr; Change inputs</button>
-      <button class="btn ghost" onclick="window.print()">Download / print report</button>
-      <button class="btn" onclick="window.open('https://singlesession.online','_blank')">Talk to us &rarr;</button>
+      <button class="btn ghost" onclick="generateReport()">Download report (PDF)</button>
+      <button class="btn" onclick="window.open('https://singlesession.online/schedule','_blank')">Talk to us &rarr;</button>
     </div>
   </section>
+
+  <footer class="ssc-foot no-print">
+    <div>© 2026 Single Session Coaching Global BV (Netherlands) · Sales-leader upside calculator v2.0 (beta)</div>
+    <div>A modelled estimate, not a measured outcome — all figures are estimates. Research: Gallup Q12 meta-analysis and State of the American Manager (2015); Leadership Circle; Hoyt &amp; Talmon (2014). Churn and ramp use industry benchmarks. <a href="https://singlesession.online/privacy" target="_blank" rel="noopener">Privacy</a> · <a href="https://singlesession.online/terms-conditions" target="_blank" rel="noopener">Terms</a> · <a href="https://singlesession.online/dpa" target="_blank" rel="noopener">DPA</a></div>
+  </footer>
 
 </div>
 
@@ -443,17 +455,18 @@ function render(){
 
 function sendReport(){
   const em=document.getElementById('email').value.trim();
+  const nm=val('cName'),co=val('cCompany');
   const ok=document.getElementById('ok3'),err=document.getElementById('err3');
   ok.textContent='';err.textContent='';
-  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){err.textContent='Enter a valid email.';return;}
-  if(FORMSPARK_ACTION.indexOf('YOUR-FORMSPARK-ID')!==-1){err.textContent='Email delivery isn\'t wired up yet — set the Formspark endpoint.';return;}
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){err.textContent='Enter a valid work email so we can reply.';return;}
+  if(FORMSPARK_ACTION.indexOf('YOUR-FORMSPARK-ID')!==-1){err.textContent='Sending isn\'t wired up yet — set the Formspark endpoint.';return;}
   const r=calc();
   fetch(FORMSPARK_ACTION,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},
-    body:JSON.stringify({email:em,currency:cur,ticks:r.ticks,
+    body:JSON.stringify({name:nm,email:em,company:co,currency:cur,ticks:r.ticks,
       revenue_won_back:Math.round(r.A),reps_kept:Math.round(r.B),
       renewal_protected:Math.round(r.Cstream),total_upside:Math.round(r.total),
       roi_multiple:Math.round(r.roi),source:'sales-calc-v2-beta'})})
-    .then(()=>{ok.textContent='Sent — check your inbox shortly.';})
+    .then(()=>{ok.textContent='Sent — we\'ll be in touch shortly.';})
     .catch(()=>{err.textContent='Something went wrong sending that. Try again.';});
 }
 
@@ -471,6 +484,172 @@ function formatMoney(el){
   try{el.setSelectionRange(pos,pos);}catch(e){}
 }
 document.querySelectorAll('.money').forEach(function(el){el.addEventListener('input',function(){formatMoney(el);});});
+
+/* ===== brand assets for the printable report (swap COVER for the sales image) ===== */
+const REPORT_COVER='https://static1.squarespace.com/static/67c07a91ad784447cbc65db9/t/6a2e0b244b60020366e4a624/1781402406520/Cork+Portrait.png';
+const REPORT_LOGO='https://static1.squarespace.com/static/67c07a91ad784447cbc65db9/t/6a228252da61d52e8d94fc8e/1780646482602/SSC+Word+Mark.001.png';
+const VERSION='v2.0 (beta)';
+function val(id){return ((document.getElementById(id)||{}).value||'').trim();}
+
+function generateReport(){
+  const r=calc();
+  if(r.total<=0){alert('Add your figures and tick the observed behaviours first.');return;}
+  const cy=cur;
+  const f=function(n){return cy+Math.round(n).toLocaleString('en-GB');};
+  const company=val('cCompany');
+  const date=new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
+  const quota=num('quota'),ote=num('ote'),lost=num('lost'),attain=num('attain');
+  const baseTurn=num('baseTurn'),ramp=num('ramp'),repl=num('repl');
+  const reps=Math.max(1,num('reps'));
+  const hasRenew=document.getElementById('hasRenew').checked, book=num('renewBook');
+  const tickEls=[].slice.call(document.querySelectorAll('.sc:checked'));
+  const tickCount=tickEls.length, tickList=tickEls.map(function(c){return c.parentElement.querySelector('span').textContent;});
+  const intensity=tickCount/9, frac=intensity*0.5;
+  const baselineDeps=reps*(baseTurn/100);
+  const excess=Math.max(0,lost-baselineDeps);
+  const attribDeps=excess*0.70*intensity;
+  const perRepQuota=quota/reps;
+  const replacement=ote*(repl/100);
+  const rampGap=perRepQuota*(ramp/12)*0.5;
+
+  const win=window.open('','_blank','width=900,height=700');
+  if(!win){alert('Please allow pop-ups for this site to download your report.');return;}
+
+  const inputs=[
+    ['Company / team', company||'—'],
+    ['Currency', cy],
+    ['Team annual sales target', f(quota)],
+    ['Reps in the team', reps],
+    ['Average rep OTE', f(ote)],
+    ['Reps lost in last 12 months', lost],
+    ['Current attainment %', attain?attain+'%':'—'],
+    ['Normal annual turnover %', baseTurn+'%'],
+    ['Ramp to full productivity', ramp+' months'],
+    ['Replacement cost (% of OTE)', repl+'%'],
+    ['Renewal / expansion book', hasRenew?f(book):'not applicable'],
+    ['Observed behaviours', tickCount+' of 9'],
+    ['Date', date]
+  ].map(function(x){return '<tr><td>'+x[0]+'</td><td>'+x[1]+'</td></tr>';}).join('');
+
+  const working=[
+    ['Observed pattern intensity', tickCount+' / 9', Math.round(intensity*100)+'%'],
+    ['Conservative share of quartile gap', 'intensity × 50% ceiling', Math.round(frac*100)+'%'],
+    ['Top line — revenue to win back', 'quota × '+Math.round(frac*100)+'% × 20% (Gallup) × 70%', f(r.A)],
+    ['Excess departures (above baseline)', lost+' − '+baselineDeps.toFixed(1), Math.max(0,excess).toFixed(1)],
+    ['Attributed to the leader', 'excess × 70% × intensity', attribDeps.toFixed(2)],
+    ['Replacement cost avoided', attribDeps.toFixed(2)+' × '+f(replacement), f(r.Breplace)],
+    ['Quota recovered from fewer ramps', attribDeps.toFixed(2)+' × '+f(rampGap), f(r.Bramp)]
+  ];
+  if(r.Cstream>0) working.push(['Renewal revenue protected','book × '+Math.round(frac*100)+'% × 10% × 70%', f(r.Cstream)]);
+  working.push(['Total upside on the table','A + B'+(r.Cstream>0?' + C':''), f(r.total)]);
+  const workingRows=working.map(function(x){return '<tr><td>'+x[0]+'</td><td>'+x[1]+'</td><td>'+x[2]+'</td></tr>';}).join('');
+
+  const behaviourBlock = tickCount? '<div class="pr-obs-cell"><div class="pr-obs-context"><strong>Behaviours you observed in this leader:</strong></div><div class="pr-num-desc">'+tickList.map(function(t){return '• '+t;}).join('<br>')+'</div></div>' : '';
+
+  win.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8">
+  <title>Reactive Sales Leader — Upside Report${company?' · '+company:''}</title>
+  <style>
+    @font-face { font-family:'DrukTextBold'; src:url('https://static1.squarespace.com/static/67c07a91ad784447cbc65db9/t/6a1009cd7aaf840ccfa17f85/1779435981098/Druk-Bold-Web.woff2') format('woff2'); font-weight:700; }
+    @font-face { font-family:'GothamBook'; src:url('https://static1.squarespace.com/static/67c07a91ad784447cbc65db9/t/67c16f32ccecbb575ae82d2f/1740730162912/GothamBook.ttf') format('truetype'); font-weight:400; }
+    @font-face { font-family:'GothamMedium'; src:url('https://static1.squarespace.com/static/67c07a91ad784447cbc65db9/t/67c97a2fa70c204473c1f0c9/1741278511802/GothamMedium.ttf') format('truetype'); font-weight:600; }
+    @font-face { font-family:'GothamLight'; src:url('https://static1.squarespace.com/static/67c07a91ad784447cbc65db9/t/6830c26fc80e440c041d2ef5/1748025967908/Gotham-Light.otf') format('opentype'); font-weight:300; }
+    @page { size:A4 portrait; margin:12mm; }
+    *{ -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; box-sizing:border-box; margin:0; padding:0; }
+    body{ background:#fff; color:#111; font-family:'GothamBook',Arial,sans-serif; font-size:10pt; line-height:1.55; }
+    .pr-page{ page-break-after:always; page-break-inside:avoid; }
+    .pr-page:last-child{ page-break-after:avoid; }
+    .pr-cover{ position:relative; height:245mm; display:flex; flex-direction:column; justify-content:flex-end; overflow:hidden; background:#111 !important; }
+    .pr-cover-img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center top; z-index:0; }
+    .pr-cover-head{ position:absolute; top:0; left:0; right:0; display:flex; align-items:flex-start; justify-content:space-between; padding:6mm 10mm 0; z-index:2; }
+    .pr-cover-body{ position:relative; z-index:2; padding:0 10mm 7mm; }
+    .pr-wm{ width:16mm; }
+    .pr-cover-tag{ font-family:'GothamMedium',Arial,sans-serif; font-size:5pt; letter-spacing:.12em; text-transform:uppercase; color:rgba(255,255,255,.5) !important; text-align:right; line-height:1.5; }
+    .pr-cover-org{ font-family:'GothamMedium',Arial,sans-serif; font-size:6pt; letter-spacing:.12em; text-transform:uppercase; color:#DCFF4F !important; margin-bottom:2mm; }
+    .pr-cover-title{ font-family:'DrukTextBold',Arial,sans-serif; font-size:24pt; line-height:.92; color:#fff !important; text-transform:uppercase; margin-bottom:2.5mm; }
+    .pr-cover-sub{ font-family:'GothamLight',Arial,sans-serif; font-size:7.5pt; color:rgba(255,255,255,.7) !important; line-height:1.4; max-width:100mm; margin-bottom:2.5mm; }
+    .pr-cover-date{ font-family:'GothamBook',Arial,sans-serif; font-size:5.5pt; color:rgba(255,255,255,.35) !important; letter-spacing:.08em; }
+    .pr-section-label{ font-family:'DrukTextBold',Arial,sans-serif; font-size:7.5pt; letter-spacing:.22em; text-transform:uppercase; color:#888 !important; border-bottom:1.5px solid #ddd; padding-bottom:2.5mm; margin:9mm 0 5mm; }
+    .pr-num-grid{ display:grid; grid-template-columns:1fr 1fr; gap:3mm; margin-bottom:6mm; }
+    .pr-num-cell{ border:1px solid #e0e0e0; padding:5mm 6mm; page-break-inside:avoid; }
+    .pr-num-cell.full{ grid-column:1/-1; }
+    .pr-num-cell.win{ border-left:4px solid #4a7a00; }
+    .pr-num-eyebrow{ font-family:'GothamMedium',Arial,sans-serif; font-size:7pt; letter-spacing:.1em; text-transform:uppercase; color:#888 !important; margin-bottom:2.5mm; }
+    .pr-big{ font-family:'DrukTextBold',Arial,sans-serif; font-size:28pt; line-height:1; text-transform:uppercase; margin-bottom:2.5mm; color:#111 !important; }
+    .pr-big.win{ color:#4a7a00 !important; }
+    .pr-num-desc{ font-family:'GothamLight',Arial,sans-serif; font-size:8.5pt; color:#555 !important; line-height:1.5; }
+    .pr-range{ font-family:'GothamMedium',Arial,sans-serif; font-size:9pt; color:#666 !important; margin-top:2mm; }
+    .pr-roi{ font-family:'DrukTextBold',Arial,sans-serif; font-size:14pt; color:#111 !important; margin-top:2mm; }
+    .pr-obs-cell{ border:1px solid #e0e0e0; border-left:4px solid #DCFF4F; padding:5mm 6mm; margin-bottom:6mm; }
+    .pr-inputs,.pr-working{ width:100%; border-collapse:collapse; margin-bottom:5mm; font-size:9pt; }
+    .pr-inputs tr,.pr-working tr{ border-bottom:1px solid #eee; }
+    .pr-inputs td,.pr-working td{ padding:2mm 3mm; font-family:'GothamLight',Arial,sans-serif; }
+    .pr-inputs td:last-child,.pr-working td:last-child{ text-align:right; font-family:'GothamMedium',Arial,sans-serif; }
+    .pr-working td:nth-child(2){ color:#aaa !important; text-align:center; font-size:8pt; }
+    .pr-body{ font-family:'GothamLight',Arial,sans-serif; font-size:10pt; color:#1a1a1a !important; line-height:1.75; margin-bottom:4mm; }
+    .pr-research-grid{ display:grid; grid-template-columns:1fr 1fr; gap:3.5mm 9mm; margin-top:2mm; }
+    .pr-research-item{ padding-bottom:3.5mm; border-bottom:1px solid #eee; page-break-inside:avoid; }
+    .pr-research-title{ font-family:'GothamMedium',Arial,sans-serif; font-size:8.5pt; color:#111 !important; margin-bottom:1.5mm; }
+    .pr-research-body{ font-family:'GothamLight',Arial,sans-serif; font-size:8.5pt; color:#444 !important; line-height:1.55; }
+    .pr-cta{ background:#111 !important; padding:10mm 12mm; margin-top:9mm; page-break-inside:avoid; }
+    .pr-cta img{ width:20mm; margin-bottom:5mm; }
+    .pr-cta-head{ font-family:'DrukTextBold',Arial,sans-serif; font-size:20pt; color:#DCFF4F !important; text-transform:uppercase; line-height:1; margin-bottom:4mm; }
+    .pr-cta-body{ font-family:'GothamLight',Arial,sans-serif; font-size:9.5pt; color:#ccc !important; line-height:1.65; margin-bottom:4mm; max-width:145mm; }
+    .pr-cta-url{ font-family:'GothamMedium',Arial,sans-serif; font-size:9.5pt; color:#DCFF4F !important; letter-spacing:.06em; }
+    .pr-foot{ margin-top:6mm; padding-top:3mm; border-top:1px solid #ddd; font-family:'GothamLight',Arial,sans-serif; font-size:6.5pt; color:#999 !important; line-height:1.5; }
+  </style></head><body>
+
+  <div class="pr-page pr-cover">
+    <img class="pr-cover-img" src="${REPORT_COVER}" alt="">
+    <div class="pr-cover-head"><img class="pr-wm" src="${REPORT_LOGO}" alt="SSC"><div class="pr-cover-tag">SINGLE SESSION COACHING<br>SINGLESESSION.ONLINE</div></div>
+    <div class="pr-cover-body">
+      ${company?'<div class="pr-cover-org">Prepared for '+company.toUpperCase()+'</div>':''}
+      <div class="pr-cover-title">THE DOUBLE<br>GAIN, IN YOUR<br>NUMBERS</div>
+      <div class="pr-cover-sub">What changing one reactive sales leader is worth — revenue to win back, and reps to keep. A modelled estimate, deliberately conservative.</div>
+      <div class="pr-cover-date">${date}</div>
+    </div>
+  </div>
+
+  <div class="pr-page">
+    <div class="pr-section-label">Your estimated upside</div>
+    <div class="pr-num-grid">
+      <div class="pr-num-cell win"><div class="pr-num-eyebrow">Win more · top line</div><div class="pr-big win">${f(r.A)}</div><div class="pr-num-desc">Revenue currently suppressed and recoverable — deals a reactive leader's pattern is costing the team.</div></div>
+      <div class="pr-num-cell win"><div class="pr-num-eyebrow">Keep more · bottom line</div><div class="pr-big win">${f(r.B)}</div><div class="pr-num-desc">Replacement cost and ramp-time quota you stop paying for when good reps stay.</div></div>
+      <div class="pr-num-cell full"><div class="pr-num-eyebrow">Upside on the table — per leader, per year</div><div class="pr-big win">${f(r.total)}</div><div class="pr-range">Modelled range ${f(r.low)} – ${f(r.high)}</div><div class="pr-roi">${(r.roi>=1?r.roi.toFixed(0):r.roi.toFixed(1))}× the cost of one 90-minute session (€3,500), every year you act.</div></div>
+    </div>
+    ${behaviourBlock}
+    <div class="pr-num-desc">A modelled estimate of upside available to recover — not revenue promised. The realised figure is what we measure together afterwards, against your baseline. We say “won back”, never “generated”, until it is measured.</div>
+  </div>
+
+  <div class="pr-page">
+    <div class="pr-section-label">Your inputs</div>
+    <table class="pr-inputs">${inputs}</table>
+    <div class="pr-section-label">How we calculate these estimates</div>
+    <table class="pr-working">${workingRows}</table>
+  </div>
+
+  <div class="pr-page">
+    <div class="pr-section-label">How this is calculated — research vs judgement</div>
+    <div class="pr-body"><strong>Top line.</strong> Gallup's Q12 meta-analysis finds a 20% gap in sales between top- and bottom-quartile engagement units, and that managers account for ~70% of engagement variance (State of the American Manager, 2015). We never apply the full gap: the observed-pattern score positions you on a conservative band topping out at half of it — a ceiling of ~7% of quota, lower the fewer behaviours ticked. Linking a reactive pattern to lower engagement is SSC's reasoning, not Gallup's — which is why this is a modelled estimate.</div>
+    <div class="pr-body"><strong>Bottom line.</strong> Only departures above your normal turnover count, only ~70% credited to the leader, scaled by the observed pattern. Each carries a replacement cost (a share of OTE) plus the quota a ramping seat can't yet carry. These are industry benchmarks you can adjust, not research constants. For a sales team the productivity loss is the revenue gap, so it is priced once — on the top line — not stacked twice.</div>
+    <div class="pr-research-grid">
+      <div class="pr-research-item"><div class="pr-research-title">20% sales gap, 70% manager attribution</div><div class="pr-research-body">Gallup Q12 meta-analysis; Gallup, State of the American Manager (2015).</div></div>
+      <div class="pr-research-item"><div class="pr-research-title">75% of leaders operate reactively</div><div class="pr-research-body">Leadership Circle / Anderson & Adams, across 2M+ leaders assessed.</div></div>
+      <div class="pr-research-item"><div class="pr-research-title">A single session can produce lasting change</div><div class="pr-research-body">Hoyt & Talmon (2014), Capturing the Moment. SSC outcome data on request.</div></div>
+      <div class="pr-research-item"><div class="pr-research-title">Rep churn & ramp</div><div class="pr-research-body">Industry benchmarks for replacement cost and time-to-productivity; adjustable in the calculator.</div></div>
+    </div>
+    <div class="pr-cta">
+      <img src="${REPORT_LOGO}" alt="SSC">
+      <div class="pr-cta-head">Let's win it back together.</div>
+      <div class="pr-cta-body">This is an estimate, built on published research and deliberately cautious assumptions. It will not be precise. But if it is even half right, it is an upside worth exploring — and a conversation worth having.</div>
+      <div class="pr-cta-url">singlesession.online/schedule</div>
+    </div>
+    <div class="pr-foot">© ${new Date().getFullYear()} Single Session Coaching Global BV (Netherlands). Sales-leader upside calculator ${VERSION}. A modelled estimate, not a measured outcome; all figures are estimates. Research: Gallup Q12 meta-analysis and State of the American Manager (2015); Leadership Circle; Hoyt &amp; Talmon (2014). Churn and ramp use industry benchmarks. Data handled per singlesession.online/privacy, /terms-conditions and /dpa.</div>
+  </div>
+
+  </body></html>`);
+  win.document.close();
+  setTimeout(function(){try{win.focus();win.print();}catch(e){}},700);
+}
 
 /* iframe auto-resize — same 'ssc-height' contract as v1 */
 function postHeight(){
