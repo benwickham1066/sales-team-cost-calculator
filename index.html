@@ -133,6 +133,17 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
 .tick:last-child{border-bottom:0}
 .tick input{width:18px;height:18px;flex:0 0 auto;margin-top:2px;accent-color:var(--lime);cursor:pointer}
 .tick span{font-size:14px;color:var(--white)}
+.pat{margin-top:24px}.pat:first-child{margin-top:0}
+.pat+.pat{border-top:1px solid var(--border);padding-top:24px}
+.pat-h{font-family:var(--display);font-size:1.2rem;letter-spacing:.02em;text-transform:uppercase;color:var(--white);margin-bottom:4px}
+.pat-h span{color:var(--muted);font-family:var(--body);text-transform:none;letter-spacing:0;font-size:.78rem}
+.pat-eg{font-size:13px;color:var(--muted);line-height:1.6}
+.slider{width:100%;-webkit-appearance:none;appearance:none;height:6px;border-radius:6px;background:var(--surface2);outline:none;margin:16px 0 9px;cursor:pointer}
+.slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:22px;height:22px;border-radius:50%;background:var(--lime);border:2px solid #0b0b0c;cursor:pointer}
+.slider::-moz-range-thumb{width:22px;height:22px;border:2px solid #0b0b0c;border-radius:50%;background:var(--lime);cursor:pointer}
+.slider:focus{outline:none}
+.pat-scale{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:11px;color:#9a9aa0}
+.pat-val{color:var(--lime);font-family:var(--ui);font-weight:600;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap}
 
 /* buttons — v1 idiom */
 .btn{display:inline-flex;align-items:center;gap:8px;background:var(--lime);color:var(--black);border:0;cursor:pointer;
@@ -252,13 +263,13 @@ details[open] summary::after{content:'\2013'}
     </div>
 
     <div class="panel spaced">
-      <div class="lh"><label>Does this team own renewals or expansion revenue?</label><span class="info" tabindex="0" data-tip="Renewals means keeping existing customers when their contracts come up; expansion means growing those accounts through upsells. Switch this on if the team owns either, and we add the retained revenue a reactive leader puts at risk.">i</span></div>
+      <div class="lh"><label>Does this team carry a renewal / retention book?</label><span class="info" tabindex="0" data-tip="Only switch this on if part of the team's number comes from renewing or retaining existing contracts (not new business). If it does, we add the retained revenue a reactive leader puts at risk. If they only chase new deals, leave it off.">i</span></div>
       <div class="switch">
         <label class="toggle"><input type="checkbox" id="hasRenew" onchange="toggleRenew()"><span class="track"></span><span class="dot"></span></label>
-        <span style="font-size:14px;color:var(--white)">A reactive leader also protects less <em>retained</em> revenue, not only new.</span>
+        <span style="font-size:14px;color:var(--white)">For teams with a renewal book, a reactive leader also leaks <em>retained</em> revenue.</span>
       </div>
       <div class="field" id="renewField" style="display:none">
-        <div class="lh"><label for="renewBook" style="margin-top:16px">Annual renewal / expansion book</label><span class="info" tabindex="0" data-tip="The yearly value of revenue this team renews or grows from existing customers, as opposed to brand-new sales.">i</span></div>
+        <div class="lh"><label for="renewBook" style="margin-top:16px">Annual renewal / retention book</label><span class="info" tabindex="0" data-tip="The yearly value of contracts this team renews or retains, as opposed to brand-new sales.">i</span></div>
         <div class="input-row"><span class="cur" data-cur>€</span><input type="text" inputmode="numeric" class="money" id="renewBook" placeholder="3,000,000"></div>
       </div>
     </div>
@@ -267,29 +278,29 @@ details[open] summary::after{content:'\2013'}
     <div class="err" id="err1"></div>
   </section>
 
-  <!-- ===================== STEP 2 — SCORECARD ===================== -->
+    <!-- ===================== STEP 2 — PATTERN SLIDERS ===================== -->
   <section class="step" id="s2">
     <span class="sect-label">Step 2 of 2 · The pattern</span>
-    <h2 style="margin-top:14px">What you've actually seen this leader do</h2>
-    <p class="sub" style="margin-top:8px">Tick only what you've genuinely observed. The upside is built from this — no ticks, no claim. Behaviours map to three reactive patterns.</p>
+    <h2 style="margin-top:14px">How does this team tend to operate under pressure?</h2>
+    <p class="sub" style="margin-top:8px">Three reactive patterns. Rate how present each one is — left if it's situational at most, right if it's the team's default. Incentives and corporate pressure cause plenty of this; that's not what we price. We only price the reflex, so a low setting barely counts.</p>
     <div class="panel spaced">
-      <div class="dim">
-        <div class="dim-h">Controlling <span>— drives results through force, can't let go</span></div>
-        <label class="tick"><input type="checkbox" class="sc"><span>Takes over reps' deals or calls rather than coaching them through</span></label>
-        <label class="tick"><input type="checkbox" class="sc"><span>Sits on decisions reps need, so deals stall waiting on them</span></label>
-        <label class="tick"><input type="checkbox" class="sc"><span>Hoards pipeline visibility; the team can't see the whole picture</span></label>
+      <div class="pat">
+        <div class="pat-h">Controlling <span>— drives results through force, can't let go</span></div>
+        <div class="pat-eg">Looks like: takes over big deals instead of coaching · sits on decisions so deals stall · keeps pipeline visibility to themselves.</div>
+        <input type="range" class="slider" id="patC" data-val="valC" min="0" max="100" value="0" oninput="updSlider(this)" aria-label="How present is the Controlling pattern">
+        <div class="pat-scale"><span>Not something I see</span><span class="pat-val" id="valC">Not present</span><span>It's the default</span></div>
       </div>
-      <div class="dim">
-        <div class="dim-h">Protecting <span>— withdraws, stays distant and safe</span></div>
-        <label class="tick"><input type="checkbox" class="sc"><span>Avoids the hard performance conversation until it's too late</span></label>
-        <label class="tick"><input type="checkbox" class="sc"><span>Explains away missed numbers rather than confronting them</span></label>
-        <label class="tick"><input type="checkbox" class="sc"><span>Keeps their distance from the team and from live deals</span></label>
+      <div class="pat">
+        <div class="pat-h">Protecting <span>— withdraws, stays distant and safe</span></div>
+        <div class="pat-eg">Looks like: avoids the hard performance conversation · explains away misses instead of confronting them · stays distant from the team and live deals.</div>
+        <input type="range" class="slider" id="patP" data-val="valP" min="0" max="100" value="0" oninput="updSlider(this)" aria-label="How present is the Protecting pattern">
+        <div class="pat-scale"><span>Not something I see</span><span class="pat-val" id="valP">Not present</span><span>It's the default</span></div>
       </div>
-      <div class="dim">
-        <div class="dim-h">Complying <span>— defers, pleases, won't push back</span></div>
-        <label class="tick"><input type="checkbox" class="sc"><span>Accepts unrealistic targets without negotiating them down</span></label>
-        <label class="tick"><input type="checkbox" class="sc"><span>Sides with senior management instead of backing the team</span></label>
-        <label class="tick"><input type="checkbox" class="sc"><span>Lets other departments stall deals instead of pushing to unblock them</span></label>
+      <div class="pat">
+        <div class="pat-h">Complying <span>— defers, pleases, won't push back</span></div>
+        <div class="pat-eg">Looks like: accepts unrealistic targets without negotiating · sides with senior management over the team · lets other departments stall deals.</div>
+        <input type="range" class="slider" id="patM" data-val="valM" min="0" max="100" value="0" oninput="updSlider(this)" aria-label="How present is the Complying pattern">
+        <div class="pat-scale"><span>Not something I see</span><span class="pat-val" id="valM">Not present</span><span>It's the default</span></div>
       </div>
     </div>
     <div class="btn-row">
@@ -306,7 +317,7 @@ details[open] summary::after{content:'\2013'}
 
     <div class="ledger">
       <div class="gain"><div class="tag">Win more · top line</div><div class="num" id="aNum">—</div><div class="of" id="aOf">revenue to win back</div></div>
-      <div class="gain"><div class="tag">Keep more · bottom line</div><div class="num" id="bNum">—</div><div class="of">churn &amp; ramp you stop paying for</div></div>
+      <div class="gain"><div class="tag">Keep more · bottom line</div><div class="num" id="bNum">—</div><div class="of">churn and lost ramp-up quota you stop paying for</div></div>
     </div>
 
     <div class="strip">
@@ -386,6 +397,8 @@ function toggleAdv(){document.getElementById('adv').classList.toggle('on');postH
 function toggleRenew(){document.getElementById('renewField').style.display=
   document.getElementById('hasRenew').checked?'block':'none';postHeight();}
 function num(id){const v=parseFloat((document.getElementById(id).value||'').replace(/[^0-9.]/g,''));return isNaN(v)?0:v;}
+function bandWord(v){return v==0?'Not present':v<=25?'Rarely · situational':v<=50?'Sometimes':v<=75?'Often':'Routine · the default';}
+function updSlider(el){el.style.background='linear-gradient(90deg,var(--lime) '+el.value+'%,var(--surface2) '+el.value+'%)';var l=document.getElementById(el.dataset.val);if(l)l.textContent=bandWord(+el.value);}
 
 function validateInputs(){
   const e=document.getElementById('err1');
@@ -398,9 +411,8 @@ function validateInputs(){
 function calc(){
   const quota=num('quota'),reps=Math.max(1,num('reps')),ote=num('ote'),lost=num('lost');
   const baseTurn=num('baseTurn')/100,rampM=Math.max(1,num('ramp')),replPct=num('repl')/100;
-  const ticks=document.querySelectorAll('.sc:checked').length;
-  const maxTicks=document.querySelectorAll('.sc').length;
-  const patternIntensity=ticks/maxTicks;
+  const sliders=[].slice.call(document.querySelectorAll('.slider'));
+  const patternIntensity=sliders.length?sliders.reduce(function(a,s){return a+(+s.value);},0)/(sliders.length*100):0;
   const frac=patternIntensity*C.gapCeiling;
 
   const A=quota*frac*C.gallupSales*C.attribution;
@@ -419,7 +431,7 @@ function calc(){
     Cstream=num('renewBook')*frac*C.gallupCustomer*C.attribution;
 
   const total=A+B+Cstream;
-  return {ticks,A,B,Breplace,Bramp,Cstream,total,attribDeps,
+  return {intensity:patternIntensity,A,B,Breplace,Bramp,Cstream,total,attribDeps,
     low:total*(1-C.uncertainty),high:total*(1+C.uncertainty),roi:total/C.sessionCost};
 }
 
@@ -437,7 +449,7 @@ function render(){
   const rows=[['Revenue to win back (top line)',fmt(r.A),'']];
   if(r.attribDeps>0){
     rows.push(['Replacement cost avoided',fmt(r.Breplace),'muted']);
-    rows.push(['Quota recovered from fewer ramps',fmt(r.Bramp),'muted']);
+    rows.push(['Quota lost while replacements get up to speed',fmt(r.Bramp),'muted']);
   } else rows.push(['Reps kept','No excess churn to credit','muted']);
   if(r.Cstream>0) rows.push(['Renewal revenue protected',fmt(r.Cstream),'']);
   rows.push(['Total upside on the table each year',fmt(r.total),'sum']);
@@ -447,7 +459,7 @@ function render(){
   document.getElementById('phSub').textContent='Sales-leader upside estimate · '+new Date().toLocaleDateString('en-GB');
 
   let d='A modelled estimate of upside available to recover — not revenue promised. It sizes what\'s on the table; the realised figure is what we measure together afterwards, against your baseline. We say "won back", never "generated", until it\'s measured.';
-  if(r.ticks===0) d='No behaviours were ticked, so there\'s no observed basis to size an upside — the estimate is zero by design. Go back and tick only what you\'ve genuinely seen.';
+  if(r.intensity===0) d='No patterns rated yet — drag the sliders to where this team actually operates. Until then there\'s no basis to size an upside, so it stays zero.';
   else if(num('lost')>Math.max(1,num('reps'))) d+=' <br><br>One to check: you\'ve entered more reps lost than the current team size — make sure that\'s a 12-month figure including backfilled seats.';
   document.getElementById('disc').innerHTML=d;
   postHeight();
@@ -462,7 +474,7 @@ function sendReport(){
   if(FORMSPARK_ACTION.indexOf('YOUR-FORMSPARK-ID')!==-1){err.textContent='Sending isn\'t wired up yet — set the Formspark endpoint.';return;}
   const r=calc();
   fetch(FORMSPARK_ACTION,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},
-    body:JSON.stringify({name:nm,email:em,company:co,currency:cur,ticks:r.ticks,
+    body:JSON.stringify({name:nm,email:em,company:co,currency:cur,pattern_intensity:Math.round(r.intensity*100),controlling:+document.getElementById('patC').value,protecting:+document.getElementById('patP').value,complying:+document.getElementById('patM').value,
       revenue_won_back:Math.round(r.A),reps_kept:Math.round(r.B),
       renewal_protected:Math.round(r.Cstream),total_upside:Math.round(r.total),
       roi_multiple:Math.round(r.roi),source:'sales-calc-v2-beta'})})
@@ -502,9 +514,9 @@ function generateReport(){
   const baseTurn=num('baseTurn'),ramp=num('ramp'),repl=num('repl');
   const reps=Math.max(1,num('reps'));
   const hasRenew=document.getElementById('hasRenew').checked, book=num('renewBook');
-  const tickEls=[].slice.call(document.querySelectorAll('.sc:checked'));
-  const tickCount=tickEls.length, tickList=tickEls.map(function(c){return c.parentElement.querySelector('span').textContent;});
-  const intensity=tickCount/9, frac=intensity*0.5;
+  const pc=+document.getElementById('patC').value, pp=+document.getElementById('patP').value, pm=+document.getElementById('patM').value;
+  const intensity=(pc+pp+pm)/300, frac=intensity*0.5;
+  const bw=function(v){return v==0?'Not present':v<=25?'Rarely / situational':v<=50?'Sometimes':v<=75?'Often':'Routine / the default';};
   const baselineDeps=reps*(baseTurn/100);
   const excess=Math.max(0,lost-baselineDeps);
   const attribDeps=excess*0.70*intensity;
@@ -527,24 +539,26 @@ function generateReport(){
     ['Ramp to full productivity', ramp+' months'],
     ['Replacement cost (% of OTE)', repl+'%'],
     ['Renewal / expansion book', hasRenew?f(book):'not applicable'],
-    ['Observed behaviours', tickCount+' of 9'],
+    ['Controlling pattern', pc+'% · '+bw(pc)],
+    ['Protecting pattern', pp+'% · '+bw(pp)],
+    ['Complying pattern', pm+'% · '+bw(pm)],
     ['Date', date]
   ].map(function(x){return '<tr><td>'+x[0]+'</td><td>'+x[1]+'</td></tr>';}).join('');
 
   const working=[
-    ['Observed pattern intensity', tickCount+' / 9', Math.round(intensity*100)+'%'],
+    ['Pattern intensity (avg of three)', pc+'%, '+pp+'%, '+pm+'%', Math.round(intensity*100)+'%'],
     ['Conservative share of quartile gap', 'intensity × 50% ceiling', Math.round(frac*100)+'%'],
     ['Top line — revenue to win back', 'quota × '+Math.round(frac*100)+'% × 20% (Gallup) × 70%', f(r.A)],
     ['Excess departures (above baseline)', lost+' − '+baselineDeps.toFixed(1), Math.max(0,excess).toFixed(1)],
     ['Attributed to the leader', 'excess × 70% × intensity', attribDeps.toFixed(2)],
     ['Replacement cost avoided', attribDeps.toFixed(2)+' × '+f(replacement), f(r.Breplace)],
-    ['Quota recovered from fewer ramps', attribDeps.toFixed(2)+' × '+f(rampGap), f(r.Bramp)]
+    ['Quota lost while replacements ramp', attribDeps.toFixed(2)+' × '+f(rampGap), f(r.Bramp)]
   ];
   if(r.Cstream>0) working.push(['Renewal revenue protected','book × '+Math.round(frac*100)+'% × 10% × 70%', f(r.Cstream)]);
   working.push(['Total upside on the table','A + B'+(r.Cstream>0?' + C':''), f(r.total)]);
   const workingRows=working.map(function(x){return '<tr><td>'+x[0]+'</td><td>'+x[1]+'</td><td>'+x[2]+'</td></tr>';}).join('');
 
-  const behaviourBlock = tickCount? '<div class="pr-obs-cell"><div class="pr-obs-context"><strong>Behaviours you observed in this leader:</strong></div><div class="pr-num-desc">'+tickList.map(function(t){return '• '+t;}).join('<br>')+'</div></div>' : '';
+  const behaviourBlock = intensity>0? '<div class="pr-obs-cell"><div class="pr-obs-context"><strong>How this team tends to operate under pressure:</strong></div><div class="pr-num-desc">Controlling — '+bw(pc)+' ('+pc+'%)<br>Protecting — '+bw(pp)+' ('+pp+'%)<br>Complying — '+bw(pm)+' ('+pm+'%)</div></div>' : '';
 
   win.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8">
   <title>Reactive Sales Leader — Upside Report${company?' · '+company:''}</title>
@@ -590,6 +604,13 @@ function generateReport(){
     .pr-research-item{ padding-bottom:3.5mm; border-bottom:1px solid #eee; page-break-inside:avoid; }
     .pr-research-title{ font-family:'GothamMedium',Arial,sans-serif; font-size:8.5pt; color:#111 !important; margin-bottom:1.5mm; }
     .pr-research-body{ font-family:'GothamLight',Arial,sans-serif; font-size:8.5pt; color:#444 !important; line-height:1.55; }
+    .pr-howto{ display:grid; grid-template-columns:1fr 1fr; gap:4mm 9mm; margin-top:3mm; }
+    .pr-howto-item{ page-break-inside:avoid; }
+    .pr-howto-n{ font-family:'DrukTextBold',Arial,sans-serif; font-size:11pt; color:#4a7a00 !important; margin-bottom:1.5mm; }
+    .pr-howto-t{ font-family:'GothamMedium',Arial,sans-serif; font-size:9pt; color:#111 !important; margin-bottom:1mm; }
+    .pr-howto-b{ font-family:'GothamLight',Arial,sans-serif; font-size:8.5pt; color:#444 !important; line-height:1.55; }
+    .pr-reliability{ border-left:4px solid #DCFF4F; padding:4mm 6mm; margin:3mm 0 5mm; background:#fafaf5 !important; }
+    .pr-reliability .pr-howto-t{ margin-bottom:2mm; }
     .pr-cta{ background:#111 !important; padding:10mm 12mm; margin-top:9mm; page-break-inside:avoid; }
     .pr-cta img{ width:20mm; margin-bottom:5mm; }
     .pr-cta-head{ font-family:'DrukTextBold',Arial,sans-serif; font-size:20pt; color:#DCFF4F !important; text-transform:uppercase; line-height:1; margin-bottom:4mm; }
@@ -625,6 +646,23 @@ function generateReport(){
     <table class="pr-inputs">${inputs}</table>
     <div class="pr-section-label">How we calculate these estimates</div>
     <table class="pr-working">${workingRows}</table>
+  </div>
+
+  <div class="pr-page">
+    <div class="pr-section-label">So — what do I do with this?</div>
+    <div class="pr-body">Read this as an <strong>order of magnitude, not an invoice.</strong> The point isn't the last digit — it's that a reactive leadership pattern carries a real, recurring cost to the number, and that most of it is recoverable. Treat the figure as a signal worth investigating, not a balance owed.</div>
+    <div class="pr-reliability">
+      <div class="pr-howto-t">How reliable is it?</div>
+      <div class="pr-howto-b">This is an <strong>evidence-informed estimate, not a measurement.</strong> It rests on solid published research — Gallup's findings on engagement, sales performance and the manager's outsized role — but the step from that research to a figure for one team is reasoned judgement, and deliberately conservative at every turn (half the quartile gap at most, only churn above your norm, ~70% attributed to the leader, scaled down by how strongly the pattern actually shows up). It is built to understate rather than overstate. It is strong enough to justify a conversation; it is not a guarantee, and it shouldn't be read as one.</div>
+    </div>
+    <div class="pr-section-label" style="margin-top:7mm">Make it more reliable</div>
+    <div class="pr-howto">
+      <div class="pr-howto-item"><div class="pr-howto-n">01</div><div class="pr-howto-t">Rate it with a colleague or two</div><div class="pr-howto-b">Have one or two others who know the team set the sliders independently, then compare. Where you agree is signal; where you differ is worth a conversation in itself.</div></div>
+      <div class="pr-howto-item"><div class="pr-howto-n">02</div><div class="pr-howto-t">Set your own assumptions</div><div class="pr-howto-b">Open “Adjust the model defaults” and rerun with turnover, ramp and replacement figures you would defend to your own board. If the number holds when the dials are yours, it is real.</div></div>
+      <div class="pr-howto-item"><div class="pr-howto-n">03</div><div class="pr-howto-t">Name the recurring pattern</div><div class="pr-howto-b">Notice which of the three patterns sits highest. That is the reflex doing the most damage — and the one whose change moves the number most.</div></div>
+      <div class="pr-howto-item"><div class="pr-howto-n">04</div><div class="pr-howto-t">Re-measure after the work</div><div class="pr-howto-b">The honest test is before and after. Re-run this ninety days on. The gap between the two is your actual recovery — measured fact in place of a modelled estimate.</div></div>
+    </div>
+    <div class="pr-body" style="margin-top:5mm"><strong>What to do next.</strong> If the number is even half right, it is an upside worth exploring. The next step is a short conversation to pressure-test it against your real situation — book it at <span style="color:#4a7a00;font-weight:600">singlesession.online/schedule</span>.</div>
   </div>
 
   <div class="pr-page">
