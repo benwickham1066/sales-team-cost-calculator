@@ -212,12 +212,12 @@ details[open] summary::after{content:'\2013'}
     <div class="panel spaced">
       <div class="field">
         <label for="quota">Team annual sales target <span class="opt">(sum of rep quotas)</span></label>
-        <div class="input-row"><span class="cur" data-cur>€</span><input type="number" id="quota" min="0" placeholder="5,000,000"></div>
+        <div class="input-row"><span class="cur" data-cur>€</span><input type="text" inputmode="numeric" class="money" id="quota" placeholder="5,000,000"></div>
       </div>
       <div class="half">
         <div class="field"><label for="reps">Reps in the team</label><input type="number" id="reps" min="1" placeholder="8"></div>
         <div class="field"><label for="ote">Average rep OTE <span class="opt">(base + variable)</span></label>
-          <div class="input-row"><span class="cur" data-cur>€</span><input type="number" id="ote" min="0" placeholder="120,000"></div></div>
+          <div class="input-row"><span class="cur" data-cur>€</span><input type="text" inputmode="numeric" class="money" id="ote" placeholder="120,000"></div></div>
       </div>
       <div class="half">
         <div class="field"><label for="lost">Reps lost in last 12 months</label><input type="number" id="lost" min="0" placeholder="2"></div>
@@ -243,7 +243,7 @@ details[open] summary::after{content:'\2013'}
       </div>
       <div class="field" id="renewField" style="display:none">
         <label for="renewBook" style="margin-top:16px">Annual renewal / expansion book</label>
-        <div class="input-row"><span class="cur" data-cur>€</span><input type="number" id="renewBook" min="0" placeholder="3,000,000"></div>
+        <div class="input-row"><span class="cur" data-cur>€</span><input type="text" inputmode="numeric" class="money" id="renewBook" placeholder="3,000,000"></div>
       </div>
     </div>
 
@@ -361,7 +361,7 @@ function setCur(btn){
 function toggleAdv(){document.getElementById('adv').classList.toggle('on');postHeight();}
 function toggleRenew(){document.getElementById('renewField').style.display=
   document.getElementById('hasRenew').checked?'block':'none';postHeight();}
-function num(id){const v=parseFloat(document.getElementById(id).value);return isNaN(v)?0:v;}
+function num(id){const v=parseFloat((document.getElementById(id).value||'').replace(/[^0-9.]/g,''));return isNaN(v)?0:v;}
 
 function validateInputs(){
   const e=document.getElementById('err1');
@@ -447,6 +447,19 @@ function sendReport(){
 }
 
 document.getElementById('toStep2').addEventListener('click',function(){if(validateInputs())go(2);});
+
+/* thousands separators on money fields (caret-preserving) */
+function formatMoney(el){
+  const before=el.value, sel=el.selectionStart||before.length;
+  const digits=before.replace(/[^0-9]/g,'');
+  const formatted=digits?Number(digits).toLocaleString('en-GB'):'';
+  el.value=formatted;
+  const dbc=before.slice(0,sel).replace(/[^0-9]/g,'').length;
+  let pos=0,seen=0;
+  while(pos<formatted.length && seen<dbc){ const c=formatted.charCodeAt(pos); if(c>=48&&c<=57)seen++; pos++; }
+  try{el.setSelectionRange(pos,pos);}catch(e){}
+}
+document.querySelectorAll('.money').forEach(function(el){el.addEventListener('input',function(){formatMoney(el);});});
 
 /* iframe auto-resize — same 'ssc-height' contract as v1 */
 function postHeight(){
