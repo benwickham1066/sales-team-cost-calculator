@@ -90,7 +90,7 @@ label .opt{color:var(--muted);font-weight:400;text-transform:none;letter-spacing
   border-radius:50%;border:1px solid var(--muted);color:var(--muted);font-family:var(--ui);font-size:9px;
   font-style:normal;line-height:1;cursor:help;flex:0 0 auto;-webkit-tap-highlight-color:transparent}
 .info:hover,.info:focus{border-color:var(--lime);color:var(--lime);outline:none}
-.info::after{content:attr(data-tip);position:absolute;left:0;top:calc(100% + 8px);z-index:20;width:240px;max-width:70vw;
+.info::after{content:attr(data-tip);position:absolute;left:50%;bottom:calc(100% + 8px);top:auto;transform:translateX(-50%);z-index:20;width:240px;max-width:80vw;
   background:#000;color:var(--white);border:1px solid var(--lime);border-radius:var(--radius);padding:10px 12px;
   font-family:var(--body);font-size:12px;font-weight:400;line-height:1.5;text-transform:none;letter-spacing:0;
   opacity:0;visibility:hidden;transition:opacity .15s;pointer-events:none}
@@ -164,6 +164,7 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
 .strip-body .band{font-size:14px;color:var(--muted)}
 .roi{display:flex;align-items:baseline;gap:8px;margin-top:14px;border-top:1px solid var(--border);padding-top:14px}
 .roi b{font-family:var(--display);font-size:28px;color:var(--white)}.roi span{font-size:13px;color:var(--muted)}
+.recur{margin-top:14px;border-top:1px solid var(--border);padding-top:14px;font-family:var(--ui);font-weight:600;font-size:13px;color:var(--muted)}
 
 .breakdown{margin-top:14px}
 .brow{display:flex;justify-content:space-between;gap:16px;padding:11px 0;border-bottom:1px solid var(--border);font-size:14px}
@@ -314,7 +315,7 @@ details[open] summary::after{content:'\2013'}
         <div class="tag">On the table each year</div>
         <div class="num" id="totNum">—</div>
         <div class="band" id="totBand"></div>
-        <div class="roi"><b id="roiX">—</b><span>&times; the cost of one 90-minute session (€3,500) — returned every year you act</span></div>
+        <div class="recur">Recoverable every year this pattern goes unaddressed.</div>
       </div>
     </div>
 
@@ -430,7 +431,6 @@ function render(){
   document.getElementById('bNum').textContent=fmt(r.B);
   document.getElementById('totNum').textContent=fmt(r.total);
   document.getElementById('totBand').textContent='Modelled range '+fmt(r.low)+' – '+fmt(r.high);
-  document.getElementById('roiX').textContent=r.roi>=1?r.roi.toFixed(0)+'×':r.roi.toFixed(1)+'×';
   const attain=num('attain');
   document.getElementById('aOf').textContent=attain>0?('lift from '+attain+'% attainment today'):'revenue to win back';
 
@@ -614,7 +614,7 @@ function generateReport(){
     <div class="pr-num-grid">
       <div class="pr-num-cell win"><div class="pr-num-eyebrow">Win more · top line</div><div class="pr-big win">${f(r.A)}</div><div class="pr-num-desc">Revenue currently suppressed and recoverable — deals a reactive leader's pattern is costing the team.</div></div>
       <div class="pr-num-cell win"><div class="pr-num-eyebrow">Keep more · bottom line</div><div class="pr-big win">${f(r.B)}</div><div class="pr-num-desc">Replacement cost and ramp-time quota you stop paying for when good reps stay.</div></div>
-      <div class="pr-num-cell full"><div class="pr-num-eyebrow">Upside on the table — per leader, per year</div><div class="pr-big win">${f(r.total)}</div><div class="pr-range">Modelled range ${f(r.low)} – ${f(r.high)}</div><div class="pr-roi">${(r.roi>=1?r.roi.toFixed(0):r.roi.toFixed(1))}× the cost of one 90-minute session (€3,500), every year you act.</div></div>
+      <div class="pr-num-cell full"><div class="pr-num-eyebrow">Upside on the table — per leader, per year</div><div class="pr-big win">${f(r.total)}</div><div class="pr-range">Modelled range ${f(r.low)} – ${f(r.high)}</div><div class="pr-roi">Recoverable every year this pattern goes unaddressed.</div></div>
     </div>
     ${behaviourBlock}
     <div class="pr-num-desc">A modelled estimate of upside available to recover — not revenue promised. The realised figure is what we measure together afterwards, against your baseline. We say “won back”, never “generated”, until it is measured.</div>
