@@ -176,6 +176,7 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
 .roi{display:flex;align-items:baseline;gap:8px;margin-top:14px;border-top:1px solid var(--border);padding-top:14px}
 .roi b{font-family:var(--display);font-size:28px;color:var(--white)}.roi span{font-size:13px;color:var(--muted)}
 .recur{margin-top:14px;border-top:1px solid var(--border);padding-top:14px;font-family:var(--ui);font-weight:600;font-size:13px;color:var(--muted)}
+.halfright{margin-top:10px;font-family:var(--body);font-size:15px;line-height:1.5;color:var(--lime)}
 
 .breakdown{margin-top:14px}
 .brow{display:flex;justify-content:space-between;gap:16px;padding:11px 0;border-bottom:1px solid var(--border);font-size:14px}
@@ -327,6 +328,7 @@ details[open] summary::after{content:'\2013'}
         <div class="num" id="totNum">—</div>
         <div class="band" id="totBand"></div>
         <div class="recur">Recoverable every year this pattern goes unaddressed.</div>
+        <div class="halfright">Even if this estimate is half right, it's a number worth a conversation.</div>
       </div>
     </div>
 
@@ -412,7 +414,10 @@ function calc(){
   const quota=num('quota'),reps=Math.max(1,num('reps')),ote=num('ote'),lost=num('lost');
   const baseTurn=num('baseTurn')/100,rampM=Math.max(1,num('ramp')),replPct=num('repl')/100;
   const sliders=[].slice.call(document.querySelectorAll('.slider'));
-  const patternIntensity=sliders.length?sliders.reduce(function(a,s){return a+(+s.value);},0)/(sliders.length*100):0;
+  const vals=sliders.map(function(s){return +s.value;});
+  const mean=vals.length?vals.reduce(function(a,v){return a+v;},0)/vals.length:0;
+  const peak=vals.length?Math.max.apply(null,vals):0;
+  const patternIntensity=((peak+mean)/2)/100;
   const frac=patternIntensity*C.gapCeiling;
 
   const A=quota*frac*C.gallupSales*C.attribution;
@@ -515,7 +520,8 @@ function generateReport(){
   const reps=Math.max(1,num('reps'));
   const hasRenew=document.getElementById('hasRenew').checked, book=num('renewBook');
   const pc=+document.getElementById('patC').value, pp=+document.getElementById('patP').value, pm=+document.getElementById('patM').value;
-  const intensity=(pc+pp+pm)/300, frac=intensity*0.5;
+  const mean=(pc+pp+pm)/3, peak=Math.max(pc,pp,pm);
+  const intensity=((peak+mean)/2)/100, frac=intensity*0.5;
   const bw=function(v){return v==0?'Not present':v<=25?'Rarely / situational':v<=50?'Sometimes':v<=75?'Often':'Routine / the default';};
   const baselineDeps=reps*(baseTurn/100);
   const excess=Math.max(0,lost-baselineDeps);
@@ -546,7 +552,7 @@ function generateReport(){
   ].map(function(x){return '<tr><td>'+x[0]+'</td><td>'+x[1]+'</td></tr>';}).join('');
 
   const working=[
-    ['Pattern intensity (avg of three)', pc+'%, '+pp+'%, '+pm+'%', Math.round(intensity*100)+'%'],
+    ['Pattern intensity — strongest, weighted with the overall picture', 'peak '+Math.round(peak)+'%, average '+Math.round(mean)+'%', Math.round(intensity*100)+'%'],
     ['Conservative share of quartile gap', 'intensity × 50% ceiling', Math.round(frac*100)+'%'],
     ['Top line — revenue to win back', 'quota × '+Math.round(frac*100)+'% × 20% (Gallup) × 70%', f(r.A)],
     ['Excess departures (above baseline)', lost+' − '+baselineDeps.toFixed(1), Math.max(0,excess).toFixed(1)],
@@ -638,7 +644,7 @@ function generateReport(){
       <div class="pr-num-cell full"><div class="pr-num-eyebrow">Upside on the table — per leader, per year</div><div class="pr-big win">${f(r.total)}</div><div class="pr-range">Modelled range ${f(r.low)} – ${f(r.high)}</div><div class="pr-roi">Recoverable every year this pattern goes unaddressed.</div></div>
     </div>
     ${behaviourBlock}
-    <div class="pr-num-desc">A modelled estimate of upside available to recover — not revenue promised. The realised figure is what we measure together afterwards, against your baseline. We say “won back”, never “generated”, until it is measured.</div>
+    <div class="pr-num-desc"><strong style="color:#4a7a00">Even if this estimate is half right, it is a number worth a conversation.</strong> A modelled estimate of upside available to recover — not revenue promised. The realised figure is what we measure together afterwards, against your baseline. We say “won back”, never “generated”, until it is measured.</div>
   </div>
 
   <div class="pr-page">
