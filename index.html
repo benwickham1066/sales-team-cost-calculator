@@ -47,10 +47,10 @@ body{background:transparent;color:var(--white);font-family:var(--body);line-heig
 h1{font-family:var(--display);font-weight:700;font-size:clamp(34px,7vw,60px);line-height:.95;
    letter-spacing:.005em;text-transform:uppercase;margin:14px 0 0}
 h1 em{font-style:normal;color:var(--lime)}
-.sub{color:var(--muted);font-size:clamp(15px,2.3vw,18px);max-width:56ch;margin-top:16px}
+.sub{color:#d4d4d8;font-size:clamp(16px,2.5vw,19px);max-width:56ch;margin-top:16px}
 h2{font-family:var(--display);font-weight:700;text-transform:uppercase;letter-spacing:.005em;
-   font-size:clamp(26px,5.2vw,40px);margin:0}
-.sect-label{font-family:var(--ui);font-weight:600;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+   font-size:clamp(32px,6.2vw,50px);margin:0}
+.sect-label{font-family:var(--ui);font-weight:600;font-size:.82rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
 
 .step{display:none}
 .step.on{display:block;animation:rise .4s cubic-bezier(.2,.7,.2,1)}
@@ -135,15 +135,15 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
 .tick span{font-size:14px;color:var(--white)}
 .pat{margin-top:24px}.pat:first-child{margin-top:0}
 .pat+.pat{border-top:1px solid var(--border);padding-top:24px}
-.pat-h{font-family:var(--display);font-size:1.2rem;letter-spacing:.02em;text-transform:uppercase;color:var(--white);margin-bottom:4px}
-.pat-h span{color:var(--muted);font-family:var(--body);text-transform:none;letter-spacing:0;font-size:.78rem}
-.pat-eg{font-size:13px;color:var(--muted);line-height:1.6}
+.pat-h{font-family:var(--display);font-size:1.65rem;letter-spacing:.02em;text-transform:uppercase;color:var(--white);margin-bottom:6px}
+.pat-h span{color:#cfcfd4;font-family:var(--body);text-transform:none;letter-spacing:0;font-size:.92rem}
+.pat-eg{font-size:14.5px;color:#d4d4d8;line-height:1.7}
 .slider{width:100%;-webkit-appearance:none;appearance:none;height:6px;border-radius:6px;background:var(--surface2);outline:none;margin:16px 0 9px;cursor:pointer}
 .slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:22px;height:22px;border-radius:50%;background:var(--lime);border:2px solid #0b0b0c;cursor:pointer}
 .slider::-moz-range-thumb{width:22px;height:22px;border:2px solid #0b0b0c;border-radius:50%;background:var(--lime);cursor:pointer}
 .slider:focus{outline:none}
-.pat-scale{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:11px;color:#9a9aa0}
-.pat-val{color:var(--lime);font-family:var(--ui);font-weight:600;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap}
+.pat-scale{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:13px;color:#c4c4ca}
+.pat-val{color:var(--lime);font-family:var(--ui);font-weight:700;font-size:13.5px;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap}
 
 /* buttons — v1 idiom */
 .btn{display:inline-flex;align-items:center;gap:8px;background:var(--lime);color:var(--black);border:0;cursor:pointer;
@@ -498,7 +498,7 @@ function formatMoney(el){
 document.querySelectorAll('.money').forEach(function(el){el.addEventListener('input',function(){formatMoney(el);});});
 
 /* ===== brand assets for the printable report (swap COVER for the sales image) ===== */
-const REPORT_COVER='https://static1.squarespace.com/static/67c07a91ad784447cbc65db9/t/6a2e0b244b60020366e4a624/1781402406520/Cork+Portrait.png';
+const REPORT_COVER='https://static1.squarespace.com/static/67c07a91ad784447cbc65db9/t/6a306eeebcbc916b4d6a6444/1781559022472/SSC+Report+Front+Pages.001.png';
 const REPORT_LOGO='https://static1.squarespace.com/static/67c07a91ad784447cbc65db9/t/6a228252da61d52e8d94fc8e/1780646482602/SSC+Word+Mark.001.png';
 const VERSION='v2.0 (beta)';
 function val(id){return ((document.getElementById(id)||{}).value||'').trim();}
